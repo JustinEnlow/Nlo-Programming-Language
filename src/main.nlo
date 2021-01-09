@@ -1,0 +1,5 @@
+use StandardLibrary:InputOutput.
+
+function Main(){
+    PrintLine("Fuck off, World!").
+}

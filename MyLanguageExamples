@@ -1,0 +1,207 @@
+///////////////////////////////////// Binary App //////////////////////////////////////////
+//modules and functions not necessary. base level application. filename will always be main.nlo
+use StandardLibrary:InputOutput.
+
+PrintLine("Fuck off, world!").
+///////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////// Standard Data Types /////////////////////////////////////
+int8 eightBitPositiveOrNegativeWholeNumber = -1.
+int16 sixteenBitPositiveOrNegativeWholeNumber = -1.
+int32 thirtyTwoBitPositiveOrNegativeWholeNumber = -1.
+int64 sixtyFourBitPositiveOrNegativeWholeNumber = -1.
+uint8 eightBitPositiveWholeNumber = 1.
+uint16 sixteenBitPositiveWholeNumber = 1.
+uint32 thirtyTwoBitPositiveWholeNumber = 1.
+uint64 sixtyFourBitPositiveWholeNumber = 1.
+float32 thirtyTwoBitDecimalNumber = 1.1.
+float64 sixtyFourBitDecimalNumber = 1.1.
+bool trueOrFalse = false.
+//TODO: figure out strings and chars
+type[] arrayOfAnySpecifiedDataType = 1, 2, 3.
+
+//types can be defined without initialization, but must be initd and used later on in code
+int32 example.
+example = 5354984651685.
+DoSomethingWithExample(inValue = example).
+///////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////// Mutability //////////////////////////////////////////
+/*every variable in Nlo is immutable by default. variables can be made mutable with the mut keyword*/
+int32 value1 = 5.
+value1 = 6. //wont compile. error: cannot mutate immutable variable
+
+mut int32 value2 = 5.
+value2 = 6. //compiles with no issues
+///////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////// Arithmetic ///////////////////////////////////////////
+// Addition: +, Subtraction: -, Multiplication: *, Division: / 
+int32 value1 = 1 + 1.
+int32 value2 = 10 - 5.
+int32 value3 = 5 * 5.
+int32 value4 = 10 / 2.
+
+// not sure what to do with modulo %, or use some other term
+///////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////// Keywords /////////////////////////////////////////////
+//not
+mut bool someBool = true.
+someBool = FlipBool(inputBool = someBool).
+
+function FlipBool(bool inputBool) returns bool{
+    return not inputBool.
+    //if inputBool is true, returns false
+    //if inputBool is false, returns true
+}
+
+//if
+if true{DoSomething().}
+else if false{DoSomethingElse().}
+else{DoAnotherThing().}
+
+//or
+if true or false{}
+
+//and
+if true and false{}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////// Comparison //////////////////////////////////////////
+//equality: == or is
+if someBool == true{DoShit().}
+if someBool is true{DoShit().}
+
+// greater: >, less than: <, greater or equal to: >=, less than or equal to: <=
+if 10 > 5{}
+if 5 < 10{}
+if 10 >= 10{}
+if 5 <= 5{}
+///////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////// Functions ///////////////////////////////////////////
+    //Definition: function FunctionName(inputParameterType inputParameterName) returns type{/*.*/}
+    function SomeFunction(int32 value) returns int32{
+        return value + 1.
+    }
+    //Use:
+    int32 startingValue = 5.
+    int32 result = SomeFunction(value = startingValue).
+///////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////// Ownership/Borrowing /////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////// MODULES /////////////////////////////////////////////
+module SomeModule{
+    module SomeSubModule{
+        function SomeFunction(){}
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////// Accessibility ////////////////////////////////////////
+//public and use keywords
+public module SomeModule{
+    public module SomeSubModule{
+        public function DoShit(){}
+    }
+    module AnotherSubModule{}
+}
+
+module AnotherModule{
+    use SomeModule:SomeSubModule.
+
+    function DoSomething(){
+        DoShit().
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////// Structs ///////////////////////////////////////////////
+    //
+    //Definition: struct StructName{type valueName}
+    //
+    public struct SomeStruct{int32 value1, int32 value2}
+
+    //
+    //Use:
+    //
+    function SomeFunction(){
+        SomeStruct someStruct = SomeStruct{value1 = 0, value2 = 1}.
+        DoSomethingWithStructValues(param1 = someStruct:value1).
+    }
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////// Enums /////////////////////////////////////////////////
+    //
+    //Definition: enum EnumName{Name1, Name2}
+    //
+    public enum SomeEnum{Option1, Option2, Option3}
+
+    //
+    //Use:
+    //
+    function SomeFunction(){
+        SomeEnum someEnum = SomeEnum:Option1.
+        if someEnum == SomeEnum:Option3{
+            DoSomeShit().
+        }
+    }
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////// Example Module ////////////////////////////////////////
+public module PIDController{
+    public struct PIDGain{
+        public float64 p, 
+        public float64 i, 
+        public float64 d
+    }
+    public struct PIDOutput{
+        public float64 output,
+        public float64 error,
+        public float64 integral
+    }
+    public function Calculate(
+        float64 setPoint, float64 measuredValue, float64 previousError, 
+        float64 previousIntegral, ref PIDGain gain, float64 deltaTime
+    ) returns PIDOutput{
+        float64 error = setPoint - measuredValue.
+        float64 integral = (previousIntegral + error) * deltaTime.
+        float64 derivative = (error - previousError) / deltaTime.
+
+        return PIDOutput pidOutput = PIDOutput{
+            output = (error * gain.p) + (integral * gain.i) + derivative * gain.d,
+            error = error,
+            integral = integral
+        }
+    }
+}
+
+module SomeModule{
+    use PIDController.
+
+    function DoSomethingWithPID(){
+        PIDGain gain = PIDGain{p = 100.0, i = 0.0, d = 0.0}
+
+        PIDOutput output = Calculate(setPoint = 50.0, measuredValue = 0.0, previousError = 0.0, 
+            previousIntegral = 0.0, ref gain = ref gain, deltaTime = 0.02).
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////// Unit Testing ///////////////////////////////////////////
+// tests can occur within a module to test private functions, they can also be in a separate .nlo file
+test SimpleTest(){
+    assert true.
+}
+
+[TestParameters(input = true, alwaysTrue = true)]
+[TestParameters(input = false, alwaysTrue = true)]
+test SimpleTestWithParameters(bool input, bool alwaysTrue){
+    assert input == alwaysTrue.
+}
+/////////////////////////////////////////////////////////////////////////////////////////////

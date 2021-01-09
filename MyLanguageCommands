@@ -1,0 +1,22 @@
+// Console commands for My Programming Language. Tentatively "Nlo".
+
+//Creation
+nlo new lib YourProjectName - creates new folder with specified project name
+                                folder contains:
+                                    src subfolder:
+                                    test subfolder:
+                                        test.nlo
+                                    Nlo.toml
+
+nlo new bin YourProjectName - creates new folder with specified project name
+                                folder contains:
+                                    src subfolder:
+                                        main.nlo
+                                    test subfolder:
+                                        test.nlo
+                                    Nlo.toml
+
+//Use
+nlo build - builds project in current directory
+nlo test - searches project for any .nlo file with a test function and runs the test
+nlo run - runs binary project in current directory

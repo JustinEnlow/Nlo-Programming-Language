@@ -1,0 +1,76 @@
+// explicity is desired in this language. no stdlib style abbreviation, except for built in types
+
+scope based memory management
+
+use Rust-like memory management, non manual, but no c# style garbage collector
+rust style borrow checker
+
+"memory is managed through a system of ownership with a set of rules that the compiler checks at 
+compile time. None of the ownership features slow down your program while it’s running"
+"
+    Each value in /*Rust*/ my language has a variable that’s called its owner.
+    There can only be one owner at a time.
+    When the owner goes out of scope, the value will be dropped.
+"
+
+make it impossible to write unsafe code
+make it impossible to write code w/ memory leaks
+guarantee thread safety
+ahead of time compilation
+compile time error catching
+
+no header files, function declarations can be checked against metadata
+*/
+///////////////////////////////////////////////////////////////////////////////////////////
+                                Example Program
+///////////////////////////////////////////////////////////////////////////////////////////
+
+use StandardLibrary:InputOutput.
+
+function Main(){
+    float number = 10.
+    immut float pi = 3.14.
+
+    Printline("{}", number * pi).
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+                                Example Program
+///////////////////////////////////////////////////////////////////////////////////////////
+
+use StandardLibrary:InputOutput.
+use StandardLibrary:RandomNumberGenerator.
+
+function Main(){
+    PrintLine("Guess the number!").
+    int32 secretNumber = Random(1, 100).
+    int32 guess.
+
+    while(true){
+        PrintLine("Please enter a whole number between 1 and 100").
+        
+        var userInput = ReadLine(). // maybe ReadLine():Parse().
+        
+        if userInput:type is guess:type { //verify data types
+            guess = userInput.
+        }
+        else{
+            PrintLine("Guess not valid.").
+            restart. // continue in c# // may not use restart. maybe retry/something else
+        }
+
+        if guess is secretNumber{
+            PrintLine("You win!").
+            break. // may not use break. maybe exitScope/endScope/finish/end/something else
+        }
+        else if guess > secretNumber{
+            PrintLine("Too big.").
+        }
+        else if guess < secretNumber{
+            PrintLine("Too small.").
+        }
+        /*
+        if an else{} is not included, compiler should show an error for unhandled conditions
+        */
+    }
+}

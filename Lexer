@@ -1,0 +1,16 @@
+Token               Example
+
+LineComment         "//"
+BlockComment        "/**/"
+Period              "."
+Whitespace          " " or enter/others
+Identifier          "nameOfVariable/Function/Test"
+UseKeyword          "use"
+OpenParenthesis     "("
+CloseParenthesis    ")"
+OpenCurlyBrace      "{"
+CloseCurlyBrace     "}"
+OpenSquareBracket   "["
+CloseSquareBracket  "]"
+PublicKeyword       "public"
+Colon               ":"
