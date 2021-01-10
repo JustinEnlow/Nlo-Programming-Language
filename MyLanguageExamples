@@ -41,7 +41,7 @@ struct Person{
     int32 age
 }   //heap allocated. uses heap dependent variables
 //array:
-char[] something = 's', 'o', 'm', 'e', 't', 'h', 'i', 'n', 'g'. //stack allocated
+char[] something = "something". //stack allocated
 String[] somethingElse. //heap allocated
 
 
@@ -118,7 +118,46 @@ if 5 <= 5{}
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////// Ownership/Borrowing /////////////////////////////////////
+    //Passing Ownership:
+    int32 a = 5.
+    int32 b = AddOne(input = a).    //ownership of data in var a is passed to the function variable
+                                    //input. data stored in input is dropped from memory when scope 
+                                    //of function ends. a is no longer usable.
+    PrintLine("{}", a). // error
+    function AddOne(int32 input) returns int32{
+        return input + 1.
+    }
+    //However:
+    mut int32 a = 5.
+    a = AddOne(input = a).          //ownership of data in var a is passed to the function variable
+                                    //input. ownership of data in input is passed to var a before
+                                    //function scope ends. a is still usable.
+    PrintLine("{}", a). 
 
+    //Passing reference:
+    mut int32 a = 2.
+    //possibly use (ref input = ref a)
+    a = AddOneByReference(input = ref a).   //a reference to data in var a is passed to the function 
+                                            //variable input. a is reassigned as the owner of the
+                                            //return data before function scope ends. only the
+                                            //reference is dropped from memory when function scope
+                                            //ends. a is still usable.
+    PrintLine("{}", a). //no error
+    function AddOneByReference(ref int32 input) returns int32{
+        return deref input + 1. //deref means use the value at reference/pointer location
+    }
+
+    Pass a copy of data:
+    //another potential. not decided
+    mut int32 a = 5.
+    a = AddOneByCopy(input = copy a).   //ownership of a is not passed into function. a copy of a's 
+                                        //data is allocated to memory for the duration of function 
+                                        //scope. a is still usable. This is efficient for stack 
+                                        //allocated variables, but not heap allocated variables.
+    PrintLine("{}", a). //no error. output 6.
+    function AddOneByCopy(copy int32 input) returns int32{
+        return input + 1.
+    }
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////// MODULES /////////////////////////////////////////////
