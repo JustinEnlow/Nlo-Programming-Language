@@ -6,6 +6,9 @@ PrintLine("Fuck off, world!").
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////// Standard Data Types /////////////////////////////////////
+//stack: 
+//fixed size
+//memory automatically recaptured by program when variables go out of scope
 int8 eightBitPositiveOrNegativeWholeNumber = -1.
 int16 sixteenBitPositiveOrNegativeWholeNumber = -1.
 int32 thirtyTwoBitPositiveOrNegativeWholeNumber = -1.
@@ -18,7 +21,30 @@ float32 thirtyTwoBitDecimalNumber = 1.1.
 float64 sixtyFourBitDecimalNumber = 1.1.
 bool trueOrFalse = false.
 //TODO: figure out strings and chars
-type[] arrayOfAnySpecifiedDataType = 1, 2, 3.
+char character = 'a'.
+
+//heap: 
+//size can change
+//visually differentiable from stack variables by starting with Capital Letters
+HashMap
+String
+
+//dependent stack/heap:
+//can either be allocated to stack or heap, if internal datatype uses one or the other
+//struct:
+struct Person{
+    int32 idNumber,
+    int32 age
+}   //stack allocated. does not use heap dependent variables
+struct Person{
+    String name,
+    int32 age
+}   //heap allocated. uses heap dependent variables
+//array:
+char[] something = 's', 'o', 'm', 'e', 't', 'h', 'i', 'n', 'g'. //stack allocated
+String[] somethingElse. //heap allocated
+
+
 
 //types can be defined without initialization, but must be initd and used later on in code
 int32 example.

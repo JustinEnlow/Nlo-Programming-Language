@@ -1,9 +1,9 @@
 // explicity is desired in this language. no stdlib style abbreviation, except for built in types
 
+ahead of time compiled
 scope based memory management
-
-use Rust-like memory management, non manual, but no c# style garbage collector
-rust style borrow checker
+ownership/borrowing: eliminate null pointers, dangling pointers, data races
+safe parallel processing
 
 "memory is managed through a system of ownership with a set of rules that the compiler checks at 
 compile time. None of the ownership features slow down your program while it’s running"
@@ -13,13 +13,7 @@ compile time. None of the ownership features slow down your program while it’s
     When the owner goes out of scope, the value will be dropped.
 "
 
-make it impossible to write unsafe code
-make it impossible to write code w/ memory leaks
-guarantee thread safety
-ahead of time compilation
-compile time error catching
-
-no header files, function declarations can be checked against metadata
+no header files
 */
 ///////////////////////////////////////////////////////////////////////////////////////////
                                 Example Program
@@ -28,8 +22,8 @@ no header files, function declarations can be checked against metadata
 use StandardLibrary:InputOutput.
 
 function Main(){
-    float number = 10.
-    immut float pi = 3.14.
+    float64 number = 10.
+    float64 pi = 3.14.
 
     Printline("{}", number * pi).
 }
