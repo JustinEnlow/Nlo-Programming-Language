@@ -1,5 +1,5 @@
-///////////////////////////////////// Binary App //////////////////////////////////////////
-//modules and functions not necessary. base level application. filename will always be main.nlo
+//////////////////////////////// Base level program ///////////////////////////////////////
+//modules and functions not necessary. filename will always be main.nlo. not used in libraries
 use StandardLibrary:InputOutput.
 
 PrintLine("Fuck off, world!").
@@ -7,42 +7,47 @@ PrintLine("Fuck off, world!").
 
 ///////////////////////////////// Standard Data Types /////////////////////////////////////
 //stack: 
-//fixed size
-//memory automatically recaptured by program when variables go out of scope
-int8 eightBitPositiveOrNegativeWholeNumber = -1.
-int16 sixteenBitPositiveOrNegativeWholeNumber = -1.
-int32 thirtyTwoBitPositiveOrNegativeWholeNumber = -1.
-int64 sixtyFourBitPositiveOrNegativeWholeNumber = -1.
-uint8 eightBitPositiveWholeNumber = 1.
-uint16 sixteenBitPositiveWholeNumber = 1.
-uint32 thirtyTwoBitPositiveWholeNumber = 1.
-uint64 sixtyFourBitPositiveWholeNumber = 1.
-float32 thirtyTwoBitDecimalNumber = 1.1.
-float64 sixtyFourBitDecimalNumber = 1.1.
-bool trueOrFalse = false.
-//TODO: figure out strings and chars
-char character = 'a'.
+    //fixed size
+    //memory automatically recaptured by program when variables go out of scope
+    int8 eightBitPositiveOrNegativeWholeNumber = -1.
+    int16 sixteenBitPositiveOrNegativeWholeNumber = -1.
+    int32 thirtyTwoBitPositiveOrNegativeWholeNumber = -1.
+    int64 sixtyFourBitPositiveOrNegativeWholeNumber = -1.
+    uint8 eightBitPositiveWholeNumber = 1.
+    uint16 sixteenBitPositiveWholeNumber = 1.
+    uint32 thirtyTwoBitPositiveWholeNumber = 1.
+    uint64 sixtyFourBitPositiveWholeNumber = 1.
+    float32 thirtyTwoBitDecimalNumber = 1.1.
+    float64 sixtyFourBitDecimalNumber = 1.1.
+    bool trueOrFalse = false.
+    //TODO: figure out strings and chars
+    char character = 'a'.
 
 //heap: 
-//size can change
-//visually differentiable from stack variables by starting with Capital Letters
-HashMap
-String
+    //size can change
+    //visually differentiable from stack variables by starting with Capital Letters
+    HashMap someHashMap.
+    String someString.
+    //list
+    List numberList = .
 
 //dependent stack/heap:
-//can either be allocated to stack or heap, if internal datatype uses one or the other
-//struct:
-struct Person{
-    int32 idNumber,
-    int32 age
-}   //stack allocated. does not use heap dependent variables
-struct Person{
-    String name,
-    int32 age
-}   //heap allocated. uses heap dependent variables
-//array:
-char[] something = "something". //stack allocated
-String[] somethingElse. //heap allocated
+    //can either be allocated to stack or heap, if internal datatype uses one or the other
+    //struct:
+        struct Person{
+            int32 idNumber,
+            int32 age
+        }   //stack allocated. does not use heap dependent variables
+        struct Person{
+            String name,
+            int32 age
+        }   //heap allocated. uses heap dependent variables
+    //array:
+        char[] something = "something". //stack allocated
+        String[] somethingElse. //heap allocated
+        //possible alternative:
+        arr char something = "something".
+        arr String somethingElse.
 
 
 
@@ -118,7 +123,7 @@ if 5 <= 5{}
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////// Ownership/Borrowing /////////////////////////////////////
-    //Passing Ownership:
+//Passing Ownership:
     int32 a = 5.
     int32 b = AddOne(input = a).    //ownership of data in var a is passed to the function variable
                                     //input. data stored in input is dropped from memory when scope 
@@ -127,14 +132,14 @@ if 5 <= 5{}
     function AddOne(int32 input) returns int32{
         return input + 1.
     }
-    //However:
+//However:
     mut int32 a = 5.
     a = AddOne(input = a).          //ownership of data in var a is passed to the function variable
                                     //input. ownership of data in input is passed to var a before
                                     //function scope ends. a is still usable.
     PrintLine("{}", a). 
 
-    //Passing reference:
+//Passing reference:
     mut int32 a = 2.
     //possibly use (ref input = ref a)
     a = AddOneByReference(input = ref a).   //a reference to data in var a is passed to the function 
@@ -147,7 +152,7 @@ if 5 <= 5{}
         return deref input + 1. //deref means use the value at reference/pointer location
     }
 
-    Pass a copy of data:
+Pass a copy of data:
     //another potential. not decided
     mut int32 a = 5.
     a = AddOneByCopy(input = copy a).   //ownership of a is not passed into function. a copy of a's 
@@ -169,7 +174,7 @@ module SomeModule{
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////// Accessibility ////////////////////////////////////////
-//public and use keywords
+//public and use keywords. items accessed outside of scope need public keyword
 public module SomeModule{
     public module SomeSubModule{
         public function DoShit(){}
@@ -239,7 +244,7 @@ public module PIDController{
         float64 derivative = (error - previousError) / deltaTime.
 
         return PIDOutput pidOutput = PIDOutput{
-            output = (error * gain.p) + (integral * gain.i) + derivative * gain.d,
+            output = (error * deref gain.p) + (integral * deref gain.i) + (derivative * deref gain.d),
             error = error,
             integral = integral
         }
@@ -253,13 +258,14 @@ module SomeModule{
         PIDGain gain = PIDGain{p = 100.0, i = 0.0, d = 0.0}
 
         PIDOutput output = Calculate(setPoint = 50.0, measuredValue = 0.0, previousError = 0.0, 
-            previousIntegral = 0.0, ref gain = ref gain, deltaTime = 0.02).
+            previousIntegral = 0.0, gain = ref gain, deltaTime = 0.02).
     }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////// Unit Testing ///////////////////////////////////////////
-// tests can occur within a module to test private functions, they can also be in a separate .nlo file
+// tests can occur within a module to test private functions. they can also be in a separate .nlo 
+// file by using the "use" keyword, but cannot test private functions in this case.
 test SimpleTest(){
     assert true.
 }

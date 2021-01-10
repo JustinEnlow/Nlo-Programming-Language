@@ -1,16 +1,40 @@
 Token               Example
 
-LineComment         "//"
-BlockComment        "/**/"
-Period              "."
-Whitespace          " " or enter/others
-Identifier          "nameOfVariable/Function/Test"
-UseKeyword          "use"
-OpenParenthesis     "("
-CloseParenthesis    ")"
-OpenCurlyBrace      "{"
-CloseCurlyBrace     "}"
-OpenSquareBracket   "["
-CloseSquareBracket  "]"
-PublicKeyword       "public"
-Colon               ":"
+LineComment         //
+BlockComment        /**/
+Period              .
+Whitespace          space or enter/others
+Identifier          nameOfVariable/Function/Test
+OpenParenthesis     (
+CloseParenthesis    )
+OpenCurlyBrace      {
+CloseCurlyBrace     }
+OpenSquareBracket   [
+CloseSquareBracket  ]
+Colon               :
+Plus                +
+Minus               -
+Muliply             *
+Divide              /
+Equivalence         == or is
+Assignment          =
+UseKeyword          use
+PublicKeyword       public
+ReturnsKeyword      returns
+ReturnKeyword       return
+RefKeyword          ref
+DerefKeyword        deref
+CopyKeyword         copy
+TestKeyword         test
+AssertKeyword       assert
+
+
+if / detected, check for following character
+    if following character is Whitespace
+        output Divide token
+    else if following character is /
+        ignore all characters until end of line
+    else if following character is *
+        ignore all characters until */
+    else
+        likely an error

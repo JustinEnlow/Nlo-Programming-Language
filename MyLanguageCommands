@@ -1,14 +1,14 @@
 // Console commands for My Programming Language. Tentatively "Nlo".
 
 //Creation
-nlo new lib YourProjectName - creates new folder with specified project name
+nlo new lib YourLibraryName - creates new folder with specified project name
                                 folder contains:
                                     src subfolder:
                                     test subfolder:
                                         test.nlo
                                     Nlo.toml
 
-nlo new bin YourProjectName - creates new folder with specified project name
+nlo new prog YourProgramName - creates new folder with specified project name
                                 folder contains:
                                     src subfolder:
                                         main.nlo
@@ -17,6 +17,9 @@ nlo new bin YourProjectName - creates new folder with specified project name
                                     Nlo.toml
 
 //Use
-nlo build - builds project in current directory
-nlo test - searches project for any .nlo file with a test function and runs the test
-nlo run - runs binary project in current directory
+nlo build - compiles project in current directory, ignoring tests. outputs build success, warnings, 
+            and errors to command line interface.
+nlo test - compiles project in current directory, and runs tests. outputs build success, warnings, 
+            errors, and test results to command line interface.
+nlo run - compiles project in current directory, ignoring tests. outputs build succes, warnings, and 
+            errors to command line interface. executes program if build successful.
