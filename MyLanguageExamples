@@ -163,6 +163,19 @@ Pass a copy of data:
     function AddOneByCopy(copy int32 input) returns int32{
         return input + 1.
     }
+
+References and scope:
+    ref int32 a = SomeFunction().       //ownership of a reference cannot be passed to a variable 
+                                        //residing in a greater scope than the referenced data.
+                                        //the data in b is cleared from memory when the function 
+                                        //scope ends. this would mean a owns a reference to a 
+                                        //location in memory with no data. This is not allowed, 
+                                        //and should cause an error.
+    PrintLine("{}", deref a).
+    function SomeFunction() returns ref int32{
+        int32 b = 5.
+        return ref b.
+    }
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////// MODULES /////////////////////////////////////////////
