@@ -20,8 +20,13 @@ PrintLine("Fuck off, world!").
     float64 sixtyFourBitDecimalNumber = 1.1.
     bool trueOrFalse = false.
     char character = 'a'.
+    //TODO: generics
 // Collections: 
-    char[] something = "something". //array of characters
+    int32[] integerArray = 1, 2, 3. //array of characters
+        PrintLine("{}", integerArray[0]).           //outputs: 1
+        PrintLine("{}", integerArray[0, 2]).        //outputs: 13
+        PrintLine("{}, {}", integerArray[0], integerArray[2]).  //outputs: 1, 3
+        PrintLine("{}", integerArray[0 to last]).   //outputs: 123
     int32<> integerList = 1, 2, 3. //a growable list of integers
         //TODO: determine whether lists should be implemented as linked lists, or "array lists"
             //Linked list: each element will hold a value, and a reference to the following values memory location
@@ -59,21 +64,25 @@ int32 value4 = 10 / 2.
 // not sure what to do with modulo %, or use some other term
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-//////////////////////////////////// Keywords /////////////////////////////////////////////
+//////////////////////////////////// Control Flow /////////////////////////////////////////////
+//if
+    if true{DoSomething().}
+    else if false{DoSomethingElse().}
+    else{DoAnotherThing().}
+
+//while
+    while true{     //or a condition that evaluates to true
+        DoSomething().
+    }
+
 //not
 mut bool someBool = true.
 someBool = FlipBool(inputBool = someBool).
-
 function FlipBool(bool inputBool) returns bool{
     return not inputBool.
     //if inputBool is true, returns false
     //if inputBool is false, returns true
 }
-
-//if
-if true{DoSomething().}
-else if false{DoSomethingElse().}
-else{DoAnotherThing().}
 
 //or
 if true or false{}
@@ -85,22 +94,22 @@ if true and false{}
 
 ///////////////////////////////////// Comparison //////////////////////////////////////////
 //equality: == or is
-if someBool == true{DoShit().}
-if someBool is true{DoShit().}
+    if someBool == true{DoShit().}
+    if someBool is true{DoShit().}
 
 // greater: >, less than: <, greater or equal to: >=, less than or equal to: <=
-if 10 > 5{}
-if 5 < 10{}
-if 10 >= 10{}
-if 5 <= 5{}
+    if 10 > 5{}
+    if 5 < 10{}
+    if 10 >= 10{}
+    if 5 <= 5{}
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////// Functions ///////////////////////////////////////////
-    //Definition: function FunctionName(inputParameterType inputParameterName) returns type{/*.*/}
+//Definition: function FunctionName(inputParameterType inputParameterName) returns type{/*.*/}
     function SomeFunction(int32 value) returns int32{
         return value + 1.
     }
-    //Use:
+//Use:
     int32 startingValue = 5.
     int32 result = SomeFunction(value = startingValue).
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -188,14 +197,14 @@ module AnotherModule{
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////// Structs ///////////////////////////////////////////////
-    //
-    //Definition: struct StructName{type valueName}
-    //
+//
+//Definition: struct StructName{type valueName}
+//
     public struct SomeStruct{int32 value1, int32 value2}
 
-    //
-    //Use:
-    //
+//
+//Use:
+//
     function SomeFunction(){
         SomeStruct someStruct = SomeStruct{value1 = 0, value2 = 1}.
         DoSomethingWithStructValues(param1 = someStruct:value1).
@@ -203,14 +212,14 @@ module AnotherModule{
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////// Enums /////////////////////////////////////////////////
-    //
-    //Definition: enum EnumName{Name1, Name2}
-    //
+//
+//Definition: enum EnumName{Name1, Name2}
+//
     public enum SomeEnum{Option1, Option2, Option3}
 
-    //
-    //Use:
-    //
+//
+//Use:
+//
     function SomeFunction(){
         SomeEnum someEnum = SomeEnum:Option1.
         if someEnum == SomeEnum:Option3{
@@ -219,25 +228,53 @@ module AnotherModule{
     }
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+//////////////////////////////////////// Generics ///////////////////////////////////////////
+    //tentative design. likely to be altered over time
+
+    //Definition: generalized data type, used in place of a standard data type. compiler will 
+    //throw error if operations on incompatible data type are used
+    //function FunctionIdentifier(gen genericIdentifier variableIdentifier){}
+    
+    function Square(gen G input) returns gen G{
+        return input * input.
+    }
+
+    PrintLine("{}", Square(input = 2)).     //outputs: 4
+    PrintLine("{}", Square(input = 2.0)).   //outputs: 4.0
+    PrintLine("{}", Square(input = true)).  //error at compile. cannot square boolean type
+
+    //supports generalized types in structs
+    struct SomeStruct{
+        gen G value1,
+        gen G value2
+    }
+
+    //supports multiple generic types
+    function DoShit(gen G input, gen H input2) returns SomeOutput{
+        //return a struct with our generics as values
+        return SomeOutput someOutput{value1 = input, value2 = input2}.
+    }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 ///////////////////////////////////// Example Module ////////////////////////////////////////
 public module PIDController{
     public struct PIDGain{
-        public float64 p, 
-        public float64 i, 
-        public float64 d
+        public gen G p, 
+        public gen G i, 
+        public gen G d
     }
     public struct PIDOutput{
-        public float64 output,
-        public float64 error,
-        public float64 integral
+        public gen G output,
+        public gen G error,
+        public gen G integral
     }
     public function Calculate(
-        float64 setPoint, float64 measuredValue, float64 previousError, 
-        float64 previousIntegral, ref PIDGain gain, float64 deltaTime
+        gen G setPoint, gen G measuredValue, gen G previousError, gen G previousIntegral, ref PIDGain gain, gen G deltaTime
     ) returns PIDOutput{
-        float64 error = setPoint - measuredValue.
-        float64 integral = (previousIntegral + error) * deltaTime.
-        float64 derivative = (error - previousError) / deltaTime.
+        gen G error = setPoint - measuredValue.
+        gen G integral = (previousIntegral + error) * deltaTime.
+        gen G derivative = (error - previousError) / deltaTime.
 
         return PIDOutput pidOutput = PIDOutput{
             output = (error * deref gain.p) + (integral * deref gain.i) + (derivative * deref gain.d),
