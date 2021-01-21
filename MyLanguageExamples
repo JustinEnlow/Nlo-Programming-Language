@@ -6,8 +6,7 @@ PrintLine("Fuck off, world!").
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////// Standard Data Types /////////////////////////////////////
-//stack: 
-    //fixed size
+//
     //memory automatically recaptured by program when variables go out of scope
     int8 eightBitPositiveOrNegativeWholeNumber = -1.
     int16 sixteenBitPositiveOrNegativeWholeNumber = -1.
@@ -20,34 +19,18 @@ PrintLine("Fuck off, world!").
     float32 thirtyTwoBitDecimalNumber = 1.1.
     float64 sixtyFourBitDecimalNumber = 1.1.
     bool trueOrFalse = false.
-    //TODO: figure out strings and chars
     char character = 'a'.
-
-//heap: 
-    //size can change
-    //visually differentiable from stack variables by starting with Capital Letters
-    HashMap someHashMap.
+// Collections: 
+    char[] something = "something". //array of characters
+    int32<> integerList = 1, 2, 3. //a growable list of integers
+        //TODO: determine whether lists should be implemented as linked lists, or "array lists"
+            //Linked list: each element will hold a value, and a reference to the following values memory location
+            //array list: when an array is made to exceed its current length, the current memory allocation is dropped,
+            //and a new location in memory is allocated that can hold the new larger version of the array
     String someString.
-    //list
-    List numberList = .
-
-//dependent stack/heap:
-    //can either be allocated to stack or heap, if internal datatype uses one or the other
-    //struct:
-        struct Person{
-            int32 idNumber,
-            int32 age
-        }   //stack allocated. does not use heap dependent variables
-        struct Person{
-            String name,
-            int32 age
-        }   //heap allocated. uses heap dependent variables
-    //array:
-        char[] something = "something". //stack allocated
-        String[] somethingElse. //heap allocated
-        //possible alternative:
-        arr char something = "something".
-        arr String somethingElse.
+    //string could potentially be a char<>, list of chars, and not an independent data type
+    struct SomeStruct{int32 value1, int32 value2}
+    enum SomeEnum{Value1, Value2}
 
 
 
