@@ -1,0 +1,11 @@
+public module ExampleProject{
+    public module Main{
+        /* example text
+        use StandardLibrary:InputOutput.
+
+        PrintLine("Fuck off, World!").
+        */
+
+        //your code here
+    }
+}

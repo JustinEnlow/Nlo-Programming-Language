@@ -23,3 +23,29 @@ nlo test - compiles project in current directory, and runs tests. outputs build 
             errors, and test results to command line interface.
 nlo run - compiles project in current directory, ignoring tests. outputs build succes, warnings, and 
             errors to command line interface. executes program if build successful.
+
+
+any .nlo file in src folder must implement a top level module with the project name.
+
+    example: 
+        nlo new lib SomeProject
+
+        add file at SomeProject/src called "SomeFile.nlo"
+
+        SomeFile.nlo must implement:
+
+            public module SomeProject{
+                public module SomeFile{
+                    /*
+                    your code here
+                    */
+                }
+            }
+
+        or, for brevity
+
+            public module SomeProject:SomeFile{
+                /*
+                your code here
+                */
+            }

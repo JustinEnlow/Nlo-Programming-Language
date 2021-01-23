@@ -237,6 +237,9 @@ module AnotherModule{
         SomeStruct someStruct = SomeStruct{value1 = 0, value2 = 1}.
         DoSomethingWithStructValues(param1 = someStruct:value1).
     }
+
+    //possible alternative
+        SomeStruct someStruct = {value1 = 0, value2 = 1}.
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////// Enums /////////////////////////////////////////////////
