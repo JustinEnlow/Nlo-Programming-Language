@@ -1,3 +1,0 @@
-test FailingTest(){
-    Assert(false).
-}

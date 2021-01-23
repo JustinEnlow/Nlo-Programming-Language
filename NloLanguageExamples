@@ -112,6 +112,34 @@ if true and false{}
 //Use:
     int32 startingValue = 5.
     int32 result = SomeFunction(value = startingValue).
+
+//functions that return a value are meaningfully equivalent to that value
+    function OnePlusOne() returns int32{return 2.}
+    int32 value = OnePlusOne().
+        //is the same as
+    int32 value = 2.
+
+//this applies when using function calls as function inputs
+    function PrintOnePlusOne(int32 input){
+        PrintLine("{}", input).
+    }
+    PrintOnePlusOne(OnePlusOne()). //outputs 2
+///////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////// Scope ////////////////////////////////////////////
+//variable are only viable in their own scope, unless explicitly passed to another scope
+    mut int32 value = 5.
+    function ChangeValue(){
+        value = 6.
+    }
+    //this is not valid. a function cannot access variables outside of its own scope.
+
+    mut int32 value = 5.
+    function ChangeValue(int32 input) returns int32{
+        return input + 1.
+    }
+    value = ChangeValue(value).
+    //this is valid because value was passed into the functions scope.
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////// Ownership/Borrowing /////////////////////////////////////
@@ -233,9 +261,9 @@ module AnotherModule{
 
     //Definition: generalized data type, used in place of a standard data type. compiler will 
     //throw error if operations on incompatible data type are used
-    //function FunctionIdentifier(gen genericIdentifier variableIdentifier){}
+    //function FunctionIdentifier(generic variableIdentifier){}
     
-    function Square(gen G input) returns gen G{
+    function Square(generic input) returns generic{
         return input * input.
     }
 
@@ -245,36 +273,89 @@ module AnotherModule{
 
     //supports generalized types in structs
     struct SomeStruct{
-        gen G value1,
-        gen G value2
+        generic value1,
+        generic value2
     }
 
     //supports multiple generic types
-    function DoShit(gen G input, gen H input2) returns SomeOutput{
+    function DoShit(generic input, generic input2) returns SomeOutput{
         //return a struct with our generics as values
         return SomeOutput someOutput{value1 = input, value2 = input2}.
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+//////////////////////////////////// Unit Testing ///////////////////////////////////////////
+// tests can occur within a module to test private functions. they can also be in a separate .nlo 
+// file by using the "use" keyword, but cannot test private functions in this case.
+test SimpleTest(){
+    assert true.
+}
+
+[TestParameters(input = true, alwaysTrue = true)]
+[TestParameters(input = false, alwaysTrue = true)]
+test SimpleTestWithParameters(bool input, bool alwaysTrue){
+    assert input == alwaysTrue.
+}
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////// Example Program ///////////////////////////////////////
+use StandardLibrary:InputOutput.
+use StandardLibrary:RandomNumberGenerator.
+
+function Main(){
+    PrintLine("Guess the number!").
+    int32 secretNumber = Random(1, 100).
+    int32 guess.
+
+    while(true){
+        PrintLine("Please enter a whole number between 1 and 100").
+        
+        var userInput = ReadLine(). // maybe ReadLine():Parse().
+        
+        if userInput:type is guess:type { //verify data types
+            guess = userInput.
+        }
+        else{
+            PrintLine("Guess not valid.").
+            restart. // continue in c# // may not use restart. maybe retry/something else
+        }
+
+        if guess is secretNumber{
+            PrintLine("You win!").
+            break. // may not use break. maybe exitScope/endScope/finish/end/something else
+        }
+        else if guess > secretNumber{
+            PrintLine("Too big.").
+        }
+        else if guess < secretNumber{
+            PrintLine("Too small.").
+        }
+        /*
+        if an else{} is not included, compiler should show an error for unhandled conditions
+        */
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 ///////////////////////////////////// Example Module ////////////////////////////////////////
 public module PIDController{
     public struct PIDGain{
-        public gen G p, 
-        public gen G i, 
-        public gen G d
+        generic p, 
+        generic i, 
+        generic d
     }
     public struct PIDOutput{
-        public gen G output,
-        public gen G error,
-        public gen G integral
+        generic output,
+        generic error,
+        generic integral
     }
     public function Calculate(
-        gen G setPoint, gen G measuredValue, gen G previousError, gen G previousIntegral, ref PIDGain gain, gen G deltaTime
+        generic setPoint, generic measuredValue, generic previousError, generic previousIntegral, ref PIDGain gain, generic deltaTime
     ) returns PIDOutput{
-        gen G error = setPoint - measuredValue.
-        gen G integral = (previousIntegral + error) * deltaTime.
-        gen G derivative = (error - previousError) / deltaTime.
+        generic error = setPoint - measuredValue.
+        generic integral = (previousIntegral + error) * deltaTime.
+        generic derivative = (error - previousError) / deltaTime.
 
         return PIDOutput pidOutput = PIDOutput{
             output = (error * deref gain.p) + (integral * deref gain.i) + (derivative * deref gain.d),
@@ -293,19 +374,5 @@ module SomeModule{
         PIDOutput output = Calculate(setPoint = 50.0, measuredValue = 0.0, previousError = 0.0, 
             previousIntegral = 0.0, gain = ref gain, deltaTime = 0.02).
     }
-}
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////// Unit Testing ///////////////////////////////////////////
-// tests can occur within a module to test private functions. they can also be in a separate .nlo 
-// file by using the "use" keyword, but cannot test private functions in this case.
-test SimpleTest(){
-    assert true.
-}
-
-[TestParameters(input = true, alwaysTrue = true)]
-[TestParameters(input = false, alwaysTrue = true)]
-test SimpleTestWithParameters(bool input, bool alwaysTrue){
-    assert input == alwaysTrue.
 }
 /////////////////////////////////////////////////////////////////////////////////////////////

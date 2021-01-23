@@ -1,0 +1,27 @@
+Goals:
+    Full and Clear expression
+        - no abbreviation except for built in types and keywords
+        - StandardLibrary instead of stdlib
+            this is not enforcable, but /*idiomatic*/ a desired characteristic of the language
+    
+    Ahead of time compilation
+        - compile time error checking
+    
+    Data ownership
+    
+    Automatic memory management
+        - based on scope
+    
+    Safety
+        - eliminate null pointers, dangling pointers, data races
+        - safe parallel processing
+    
+    Built in Testing
+        - test suite as inherent feature of the language
+    
+    No header files
+        - no separation of variable/function definition/implementation to different files
+    
+    Exhaustive Control flow and Enum matching
+        - no undefined behavior
+        - any if must have an else
