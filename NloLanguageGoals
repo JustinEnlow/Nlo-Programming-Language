@@ -25,3 +25,7 @@ Goals:
     Exhaustive Control flow and Enum matching
         - no undefined behavior
         - any if must have an else
+
+    Systems programming language
+        - usable with low level projects like operating systems/drivers/embedded
+        - useable with high level projects like games/apps/others
