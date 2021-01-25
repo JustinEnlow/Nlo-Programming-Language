@@ -1,11 +1,4 @@
-public module ExampleProject{
-    public module Main{
-        /* example text
-        use StandardLibrary:InputOutput.
+//Main.nlo does not require modules or functions. This is a base level program.
+use StandardLibrary:InputOutput.
 
-        PrintLine("Fuck off, World!").
-        */
-
-        //your code here
-    }
-}
+PrintLine("Fuck off, World!").

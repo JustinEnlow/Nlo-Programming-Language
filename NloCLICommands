@@ -5,15 +5,15 @@ nlo new lib YourLibraryName - creates new folder with specified project name
                                 folder contains:
                                     src subfolder:
                                     test subfolder:
-                                        test.nlo
+                                        Test.nlo
                                     Nlo.toml
 
 nlo new prog YourProgramName - creates new folder with specified project name
                                 folder contains:
                                     src subfolder:
-                                        main.nlo
+                                        Main.nlo
                                     test subfolder:
-                                        test.nlo
+                                        Test.nlo
                                     Nlo.toml
 
 //Use
@@ -25,27 +25,20 @@ nlo run - compiles project in current directory, ignoring tests. outputs build s
             errors to command line interface. executes program if build successful.
 
 
-any .nlo file in src folder must implement a top level module with the project name.
+any .nlo file in src folder, except for Main.nlo, must implement a top level module with the project name.
+when a new .nlo file is created, some code should be automatically generated
 
     example: 
-        nlo new lib SomeProject
+        nlo new lib ProjectName
 
-        add file at SomeProject/src called "SomeFile.nlo"
+        add file at ProjectName/src called "FileName.nlo"
 
-        SomeFile.nlo must implement:
-
-            public module SomeProject{
-                public module SomeFile{
-                    /*
-                    your code here
-                    */
-                }
+            public module ProjectName{
+                public module FileName{}
             }
 
-        or, for brevity
+        or, for brevity:
 
-            public module SomeProject:SomeFile{
-                /*
-                your code here
-                */
+            public module ProjectName:FileName{
+
             }

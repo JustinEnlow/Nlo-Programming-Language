@@ -1,5 +1,6 @@
 //////////////////////////////// Base level program ///////////////////////////////////////
-//modules and functions not necessary. filename will always be main.nlo. not used in libraries
+//modules and functions not necessary. filename will always be Main.nlo. not used in libraries
+/*Main.nlo is the only .nlo file that does not require a module with the project and file name*/
 use StandardLibrary:InputOutput.
 
 PrintLine("Fuck off, world!").
@@ -102,6 +103,9 @@ if true and false{}
     if 5 < 10{}
     if 10 >= 10{}
     if 5 <= 5{}
+
+// 
+    if 10 not= 5{}
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////// Functions ///////////////////////////////////////////
@@ -172,7 +176,7 @@ if true and false{}
         return deref input + 1. //deref means use the value at reference/pointer location
     }
 
-Pass a copy of data:
+//Pass a copy of data:
     //another potential. not decided
     mut int32 a = 5.
     a = AddOneByCopy(input = copy a).   //ownership of a is not passed into function. a copy of a's 
@@ -184,7 +188,7 @@ Pass a copy of data:
         return input + 1.
     }
 
-References and scope:
+//References and scope:
     ref int32 a = SomeFunction().       //ownership of a reference cannot be passed to a variable 
                                         //residing in a greater scope than the referenced data.
                                         //the data in b is cleared from memory when the function 
@@ -240,6 +244,8 @@ module AnotherModule{
 
     //possible alternative
         SomeStruct someStruct = {value1 = 0, value2 = 1}.
+    //or
+        SomeStruct someStruct = {0, 1}.
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////// Enums /////////////////////////////////////////////////
@@ -256,6 +262,10 @@ module AnotherModule{
         if someEnum == SomeEnum:Option3{
             DoSomeShit().
         }
+        else if someEnum is SomeEnum:Option2{
+            DoOtherShit().
+        }
+        else{}
     }
 /////////////////////////////////////////////////////////////////////////////////////////////
 
