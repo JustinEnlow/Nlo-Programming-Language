@@ -324,7 +324,7 @@ function Main(){
     while(true){
         PrintLine("Please enter a whole number between 1 and 100").
         
-        var userInput = ReadLine(). // maybe ReadLine():Parse().
+        var/*generic?*/ userInput = ReadLine(). // maybe ReadLine():Parse().
         
         if userInput:type is guess:type { //verify data types
             guess = userInput.
@@ -336,7 +336,7 @@ function Main(){
 
         if guess is secretNumber{
             PrintLine("You win!").
-            break. // may not use break. maybe exitScope/endScope/finish/end/something else
+            exit. // may not use break. maybe exitScope/endScope/finish/end/something else
         }
         else if guess > secretNumber{
             PrintLine("Too big.").
