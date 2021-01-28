@@ -28,13 +28,11 @@ PrintLine("Fuck off, world!").
         PrintLine("{}", integerArray[0, 2]).        //outputs: 13
         PrintLine("{}, {}", integerArray[0], integerArray[2]).  //outputs: 1, 3
         PrintLine("{}", integerArray[0 to last]).   //outputs: 123
-    int32<> integerList = 1, 2, 3. //a growable list of integers
+    char<> charList = "some random text". //a growable list of characters
         //TODO: determine whether lists should be implemented as linked lists, or "array lists"
             //Linked list: each element will hold a value, and a reference to the following values memory location
             //array list: when an array is made to exceed its current length, the current memory allocation is dropped,
             //and a new location in memory is allocated that can hold the new larger version of the array
-    String someString.
-    //string could potentially be a char<>, list of chars, and not an independent data type
     struct SomeStruct{int32 value1, int32 value2}
     enum SomeEnum{Value1, Value2}
 
@@ -61,8 +59,7 @@ int32 value1 = 1 + 1.
 int32 value2 = 10 - 5.
 int32 value3 = 5 * 5.
 int32 value4 = 10 / 2.
-
-// not sure what to do with modulo %, or use some other term
+int32 value5 = 11 % 4.
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////// Control Flow /////////////////////////////////////////////
@@ -75,7 +72,9 @@ int32 value4 = 10 / 2.
     while true{     //or a condition that evaluates to true
         DoSomething().
     }
+///////////////////////////////////////////////////////////////////////////////////////////
 
+///////////////////////////////////// Comparison //////////////////////////////////////////
 //not
 mut bool someBool = true.
 someBool = FlipBool(inputBool = someBool).
@@ -91,9 +90,6 @@ if true or false{}
 //and
 if true and false{}
 
-///////////////////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////// Comparison //////////////////////////////////////////
 //equality: == or is
     if someBool == true{DoShit().}
     if someBool is true{DoShit().}
@@ -104,7 +100,7 @@ if true and false{}
     if 10 >= 10{}
     if 5 <= 5{}
 
-// 
+// not equal
     if 10 not= 5{}
 ///////////////////////////////////////////////////////////////////////////////////////////
 
@@ -142,7 +138,7 @@ if true and false{}
     function ChangeValue(int32 input) returns int32{
         return input + 1.
     }
-    value = ChangeValue(value).
+    value = ChangeValue(input = value).
     //this is valid because value was passed into the functions scope.
 ///////////////////////////////////////////////////////////////////////////////////////////
 
@@ -241,11 +237,6 @@ module AnotherModule{
         SomeStruct someStruct = SomeStruct{value1 = 0, value2 = 1}.
         DoSomethingWithStructValues(param1 = someStruct:value1).
     }
-
-    //possible alternative
-        SomeStruct someStruct = {value1 = 0, value2 = 1}.
-    //or
-        SomeStruct someStruct = {0, 1}.
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////// Enums /////////////////////////////////////////////////
@@ -293,7 +284,7 @@ module AnotherModule{
     //supports multiple generic types
     function DoShit(generic input, generic input2) returns SomeOutput{
         //return a struct with our generics as values
-        return SomeOutput someOutput{value1 = input, value2 = input2}.
+        return SomeOutput someOutput = SomeOutput{value1 = input, value2 = input2}.
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -324,7 +315,7 @@ function Main(){
     while(true){
         PrintLine("Please enter a whole number between 1 and 100").
         
-        var/*generic?*/ userInput = ReadLine(). // maybe ReadLine():Parse().
+        generic/*var*/ userInput = TryParse(ReadLine()). // maybe ReadLine():Parse().
         
         if userInput:type is guess:type { //verify data types
             guess = userInput.
