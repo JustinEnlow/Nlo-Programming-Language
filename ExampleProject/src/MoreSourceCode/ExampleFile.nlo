@@ -1,4 +1,4 @@
-public module ExampleProject:ExampleFile{
+public module ExampleProject::ExampleFile{
     public function ReturnsTrue() returns bool{
         return true.
     }

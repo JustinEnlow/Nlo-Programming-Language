@@ -1,17 +1,14 @@
-public module ExampleProject:Test{
+// Tests who's assert evaluates to true will pass, false will fail
 
-    // Tests who's assert evaluates to true will pass, false will fail
+test FailingTest(){
+    assert false.
+}
 
-    test FailingTest(){
-        assert false.
-    }
+test PassingTest(){
+    use ExampleProject::ExampleFile.
 
-    test PassingTest(){
-        use ExampleProject:ExampleFile.
+    assert ExampleFile::ReturnsTrue().
 
-        assert ExampleFile:ReturnsTrue().
-
-        //or 
-        //assert ExampleProject:ExampleFile:ReturnsTrue().
-    }
+    //or 
+    //assert ExampleProject:ExampleFile:ReturnsTrue().
 }
