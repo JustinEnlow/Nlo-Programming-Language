@@ -1,0 +1,380 @@
+////////////////////////////// Arithmetic Operators ///////////////////////////////////////
+    // Addition: +, Subtraction: -, Multiplication: *, Division: / 
+    1 + 1.
+    10 - 5.
+    5 * 5.   /*if possible: */ 5 ⋅ 5. /*or: */ 5 × 5.
+    10 / 2.  /*if possible: */ 10 ÷ 2.
+    //11 % 4.  //may have a Remainder() function instead
+
+    //order of operations
+    (5 + 5) / 2.                //10 / 2. //5
+    ((2 * 2) / (5 - 3)) / 2.  //(4 / 2) / 2. //2 / 2. //1
+
+
+//////////////////////////////// Comparison Operators /////////////////////////////////////
+    //equality: ==
+        1 + 1 == 2.
+        /*if possible: */ 1 + 1 = 2.
+    // not equal
+        1 not= 2.
+        1 /= 2.
+        /*if possible: */ 1 ≠ 5.
+
+    // greater/lesser: >, less than: <, greater or equal to: >=, less than or equal to: <=
+        10 > 5.
+        5 < 10.
+        10 >= 10.
+        /*if possible: */ 10 ≥ 10.
+        5 <= 5.
+        /*if possible: */ 5 ≤ 5.
+
+
+/////////////////////////////// Logical Operators /////////////////////////////////////////
+    //not
+        not true.
+    //or
+        true or false.
+    //and
+        true and false.
+
+
+//////////////////////////////////// Testing //////////////////////////////////////////////
+    test SimpleTest(){      //are parentheses required?
+        assert true.
+    }
+
+    test MoreTests{
+        assert (1 + 1) == 2.
+        assert 1 /= 2.
+        assert 2 > 1.
+        assert 1 < 2.
+        assert 1 >= 1.
+        assert 1 <= 1.
+
+        assert not true.
+    }
+
+
+///////////////////////////////// Standard Data Types /////////////////////////////////////
+    int8        //an 8 bit positive or negative integer. from -128(-1 * 2^7) to 127(2^7 - 1)
+    int16       //a 16 bit positive or negative integer. from −32,768 (−1 × 2^15) to 32,767 (2^15 − 1)
+    int32       //a 32 bit positive or negative integer. from -2,147,483,648(-1 * 2^31) to 2,147,483,647(2^31 -1)
+    int64
+    int128
+    
+    uint8       //an 8 bit positive integer. from 0 to 255(2^8 - 1)
+    uint16      //a 16 bit positive integer. from 0 through 65,535 (2^16 − 1)
+    uint32      //a 32 bit positive integer. from 0 through 4,294,967,295(2^32 - 1)
+    uint64
+    uint128
+    
+    float32     //a 32 bit positive or negative floating point number. from x to x
+    float64
+    
+    bool        //a boolean value. true or false
+    
+    char        //a linguistic character. 'a', '!', '1'
+
+
+/////////////////////////////////// Variables /////////////////////////////////////////////
+    //variables are assigned a value, and are used in place of that value in code.
+    int32 someInt = -1.
+    uint32 someUint = 1.
+    float64 someFloat = 1.1.
+    bool someBool = true.
+    char someChar = 'a'.
+
+    //variables can also be defined without a value, as long as the value is assigned elsewhere in 
+    //the file.
+    int32 example.
+    example = 54465432.
+
+
+//////////////////////////////// Custom data types ////////////////////////////////////////
+    //Structs
+        //Definition: struct StructName{type valueName}
+            struct SomeStruct{int32 value1, int32 value2}
+        //Use:
+            SomeStruct someStruct = SomeStruct{value1 = 0, value2 = 1}.
+            SomeStruct someStruct = {value1 = 0, value2 = 1}. //should this be allowed?
+            SomeStruct someStruct = {0, 1}. //should this be allowed?
+
+            SomeStruct someStruct.
+            someStruct = SomeStruct{value1 = 0, value2 = 0}.
+
+            SomeStruct someStruct.
+            someStruct:value1 = 0.
+            someStruct:value2 = 1.
+        //
+            DoSomethingWithStructValues(param1 = someStruct:value1).
+
+
+    //Enumerations
+        //Definition: enum EnumName{Name1, Name2}
+            enum SomeEnum{Option1, Option2, Option3}
+        //Use:
+            SomeEnum someEnum = SomeEnum:Option1.
+        //or
+            SomeEnum someEnum.
+            someEnum = SomeEnum:Option1.
+        //
+            if someEnum == SomeEnum:Option3{DoSomeShit().}
+            else if someEnum is SomeEnum:Option2{DoOtherShit().}
+            else{}
+
+
+//////////////////////////////////// Control Flow /////////////////////////////////////////
+    //if
+        if true{}
+        else if false{}
+        else{}
+
+    //while
+        while true{
+            //DoSomething
+
+            //continue keyword
+            //restart keyword
+            //exit keyword
+        }
+
+        int32 i = 0.
+        while i <= 100{
+            //DoSomething
+        }
+    //foreach
+        int32 index = 0.
+        for each char character in /*SomeCollection*/charList{
+            PrintLine("index {} is {}", index, character).
+            index = index + 1.
+        }
+        PrintLine("total index amount for charList is {}", index).
+
+
+///////////////////////////////////// Mutability //////////////////////////////////////////
+    /*every variable in Nlo is immutable by default. variables can be made mutable with the mutable keyword*/
+    int32 value1 = 5.
+    value1 = 6. //wont compile. error: cannot mutate immutable variable
+
+    mutable int32 value2 = 5.
+    value2 = 6. //compiles with no issues
+
+    //all data types can be made mutable
+    mutable int8 someInt8 = 0.
+    someInt8 = 1.
+    
+    mutable float32 someFloat32 = 0.0.
+    someFloat32 = 1.0.
+    
+    mutable someBool = false.
+    someBool = true.
+    
+    mutable char someChar = 'a'.
+    someChar = 'b'.
+    
+    mutable SomeStruct someStruct = SomeStruct{value1 = 0, value2 = 0}.
+    someStruct:value1 = 1.
+    
+    mutable SomeEnum someEnum = SomeEnum:Option1.
+    someEnum = SomeEnum:Option2.
+
+
+///////////////////////////////////// Functions ///////////////////////////////////////////
+//Definition: function FunctionName(inputParameterType inputParameterName) returns type{/*.*/}
+    function SomeFunction(int32 value) returns int32{
+        return value + 1.
+    }
+    //or without input or return type
+    function SomeFunction(){} 
+//Use:
+    int32 startingValue = 5.
+    int32 result = SomeFunction(value = startingValue).
+    int32 result = SomeFunction(startingValue). //should this be used instead? or support both?
+
+//functions that return a value are meaningfully equivalent to that value
+    function OnePlusOne() returns int32{return 2.}
+    int32 value = OnePlusOne().
+        //is the same as
+    int32 value = 2.
+
+//this applies when using function calls as function inputs
+    function PrintOnePlusOne(int32 input){
+        PrintLine("{}", input).
+    }
+    PrintOnePlusOne(input = OnePlusOne()). //outputs 2
+
+
+//////////////////////////////////////// Scope ////////////////////////////////////////////
+//variable are only viable in their own or lesser scope, unless explicitly passed to another scope
+    mutable int32 value = 5.
+    if something{
+        value = 6.
+    }
+    //this is valid because value is used in a lesser scope
+
+    mutable int32 value = 5.
+    function ChangeValue(){
+        value = 6.
+    }
+    //this is not valid. a function cannot access variables outside of its own scope.
+
+    mutable int32 value = 5.
+    function ChangeValue(int32 input) returns int32{
+        return input + 1.
+    }
+    value = ChangeValue(input = value).
+    //this is valid because value was passed into the functions scope.
+
+
+///////////////////////////////////// MODULES /////////////////////////////////////////////
+    //modules are use to group related logic and struct/enum definitions
+    module SomeModule::SomeSubModule{
+        struct SomeStruct{
+            int32 value1,
+            int32 value2
+        }
+        enum SomeEnum{
+            Option1,
+            Option2
+        }
+        function SomeFunction(int32 someInput) returns int32{
+            return someInput.
+        }
+    }
+    
+
+///////////////////////////////////// Accessibility ////////////////////////////////////////
+    //public and use keywords. items accessed outside of scope need public keyword
+        /*use of a module will not include functions/structs/enums unless specifically included
+        in use statement*/
+    public module SomeModule::SomeSubModule{
+        public struct SomeStruct{
+            int32 value1,
+            int32 value2
+        }
+        public enum SomeEnum{
+            Option1,
+            Option2
+        }
+        public function SomeFunction(int32 someInput) returns int32{
+            return someInput.
+        }
+    }
+
+    module AnotherModule{
+        use SomeModule::SomeSubModule::SomeFunction.
+
+        function DoSomething(){
+            SomeStruct someStruct = SomeSubModule::SomeStruct{value1 = 1, value2 = 2}.
+            SomeEnum someEnum = SomeEnum:Option1.
+            int32 value = SomeFunction(5).
+        }
+    }
+
+
+
+
+
+
+///////////////////////////////// Ownership/Borrowing /////////////////////////////////////
+//Passing Ownership:
+    function AddOne(int32 input) returns int32{
+        return input + 1.
+    }
+    
+    int32 a = 5.
+    int32 b = AddOne(input = a).    //ownership of data in var a is passed to the function variable
+                                    //input. data stored in input is dropped from memory when scope 
+                                    //of function ends. a is no longer usable.
+    PrintLine("{}", a). // error
+    //However:
+    mutable int32 a = 5.
+    a = AddOne(input = a).          //ownership of data in var a is passed to the function variable
+                                    //input. ownership of data in input is passed to var a before
+                                    //function scope ends. a is still usable.
+    PrintLine("{}", a). 
+
+//Passing reference:
+    function AddOneByReference(ref int32 input) returns int32{
+        return deref input + 1. //deref means use the value at reference/pointer location
+    }
+
+    mutable int32 a = 2.
+    //possibly use (ref input = ref a)
+    a = AddOneByReference(input = ref a).   //a reference to data in var a is passed to the function 
+                                            //variable input. a is reassigned as the owner of the
+                                            //return data before function scope ends. only the
+                                            //reference is dropped from memory when function scope
+                                            //ends. a is still usable.
+    PrintLine("{}", a). //no error
+
+//Pass a copy of data: another potential. not decided
+    function AddOneByCopy(copy int32 input) returns int32{
+        return input + 1.
+    }
+
+    mutable int32 a = 5.
+    a = AddOneByCopy(input = copy a).   //ownership of a is not passed into function. a copy of a's 
+                                        //data is allocated to memory for the duration of function 
+                                        //scope. a is still usable. This is efficient for stack 
+                                        //allocated variables, but not heap allocated variables.
+    PrintLine("{}", a). //no error. output 6.
+
+//References and scope:
+    function SomeFunction() returns ref int32{
+        int32 b = 5.
+        return ref b.
+    }
+
+    ref int32 a = SomeFunction().       //ownership of a reference cannot be passed to a variable 
+                                        //residing in a greater scope than the referenced data.
+                                        //the data in b is cleared from memory when the function 
+                                        //scope ends. this would mean a owns a reference to a 
+                                        //location in memory with no data. This is not allowed, 
+                                        //and should cause an error.
+    PrintLine("{}", deref a).
+
+
+
+
+//////////////////////////////////////// Generics ///////////////////////////////////////////
+    //tentative design. likely to be altered over time
+
+    //Definition: generalized data type, used in place of a standard data type. compiler will 
+    //throw error if operations on incompatible data type are used
+    //function FunctionIdentifier(generic variableIdentifier){}
+    
+    function Square(generic input) returns generic{
+        return input * input.
+    }
+
+    PrintLine("{}", Square(input = 2)).     //outputs: 4
+    PrintLine("{}", Square(input = 2.0)).   //outputs: 4.0
+    PrintLine("{}", Square(input = true)).  //error at compile. cannot square boolean type
+    //certain differing data types are compatible
+    PrintLine("{}", 2 * 2.0).   //outputs: 4.0
+
+    //supports generalized types in structs
+    struct SomeStruct{
+        generic value1,
+        generic value2
+    }
+
+    //supports multiple generic types
+    function DoShit(generic input, generic input2) returns generic{
+        if someBool == true{return input.}
+        else {return input2.}
+    }
+    generic someVar = DoShit(input = 5, input2 = "TimesToDoShit").
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////// Unit/Integration Testing /////////////////////////////////////
+// tests can occur within a module to test private functions. they can also be in a separate .nlo 
+// file by using the "use" keyword, but cannot test private functions in this case.
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////// Concurrency ///////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////

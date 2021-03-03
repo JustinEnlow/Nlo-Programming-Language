@@ -1,501 +1,87 @@
 //////////////////////////////// Base level program ///////////////////////////////////////
-//modules and functions not necessary. filename will always be Main.nlo. not used in libraries
-/*Main.nlo is the only .nlo file that does not require a module with the project and file name*/
-use StandardLibrary::InputOutput::PrintLine.
+    //modules and functions not necessary. filename will always be Main.nlo. not used in libraries
+    /*Main.nlo is the only .nlo file that does not require a module with the project and file name*/
+    use CommandLineInterface::PrintLine.
 
-PrintLine("Fuck off, world!").
-///////////////////////////////////////////////////////////////////////////////////////////
+    PrintLine("Fuck off, world!").
 
-///////////////////////////////// Standard Data Types /////////////////////////////////////
-//memory automatically recaptured by program when variables go out of scope
-    int8 eightBitPositiveOrNegativeWholeNumber = -1.
-    int16 sixteenBitPositiveOrNegativeWholeNumber = -1.
-    int32 thirtyTwoBitPositiveOrNegativeWholeNumber = -1.
-    int64 sixtyFourBitPositiveOrNegativeWholeNumber = -1.
-    uint8 eightBitPositiveWholeNumber = 1.
-    uint16 sixteenBitPositiveWholeNumber = 1.
-    uint32 thirtyTwoBitPositiveWholeNumber = 1.
-    uint64 sixtyFourBitPositiveWholeNumber = 1.
-    float32 thirtyTwoBitDecimalNumber = 1.1.
-    float64 sixtyFourBitDecimalNumber = 1.1.
-    bool trueOrFalse = false.
-    char character = 'a'.
-//types can be defined without initialization, but must be initialized and used later on in code
-    int32 example.
-    example = 5354984651685.
-///////////////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////// Collections //////////////////////////////////////////// 
-    int32[] integerArray[] = 1, 2, 3. //array of characters
-        PrintLine("{}", integerArray[0]).           //outputs: 1
-        PrintLine("{}", integerArray[0, 2]).        //outputs: 13
-        PrintLine("{}, {}", integerArray[0], integerArray[2]).  //outputs: 1, 3
-        PrintLine("{}", integerArray[0-2]).   //outputs: 123
-        PrintLine("{}", integerArray[]).    //outputs: 123 //outputs full array
-
-//TODO: determine whether lists should be implemented as linked lists, or "array lists"
-    //Linked list: each element will hold a value, and a reference to the following values memory location
-    //array list: when an array is made to exceed its current length, the current memory allocation is dropped,
-    //and a new location in memory is allocated that can hold the new larger version of the array
-    char<> charList<> = "some random text". //a growable list of characters
-        PrintLine("{}", charList<0>).               //outputs: s
-        PrintLine("{}", charList<0, 2>).            //outputs: sm
-        PrintLine("{}, {}", charList<0>, charList<2>).      //outputs: s, m
-        PrintLine("{}", charList<0-5>).       //outputs: some r
-        PrintLine("{}", charList<>).    //outputs: some random text
-        //list functions:
-            AppendList(list = charList<>, addInput = ", extra text").
-            AppendListAfterIndex(list = charList<>, addInput = ", extra text", index = 3).
-///////////////////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////// Structs /////////////////////////////////////////////
-//Definition: struct StructName{type valueName}
-    struct SomeStruct{int32 value1, int32 value2}
-//Use:
-    SomeStruct someStruct = SomeStruct{value1 = 0, value2 = 1}. //which of these two is better?
-    SomeStruct someStruct = {value1 = 0, value2 = 1}.
-
-    SomeStruct someStruct.
-    someStruct = SomeStruct{value1 = 0, value2 = 0}.
-//
-    DoSomethingWithStructValues(param1 = someStruct:value1).
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////// Enums /////////////////////////////////////////////////
-//Definition: enum EnumName{Name1, Name2}
-    enum SomeEnum{Option1, Option2, Option3}
-//Use:
-    SomeEnum someEnum = SomeEnum:Option1.
-//or
-    SomeEnum someEnum.
-    someEnum = SomeEnum:Option1.
-//
-    if someEnum == SomeEnum:Option3{DoSomeShit().}
-    else if someEnum is SomeEnum:Option2{DoOtherShit().}
-    else{}
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////// Mutability //////////////////////////////////////////
-/*every variable in Nlo is immutable by default. variables can be made mutable with the mut keyword*/
-int32 value1 = 5.
-value1 = 6. //wont compile. error: cannot mutate immutable variable
-
-mut int32 value2 = 5.
-value2 = 6. //compiles with no issues
-
-//all data types can be made mutable
-mut int8 someInt8 = 0.
-someInt8 = 1.
-mut int16 someInt16 = 0.
-mut int32 someInt32 = 0.
-mut int64 someInt64 = 0.
-mut int128 someInt128 = 0.
-mut uint8 someUint8 = 0.
-mut uint16 someUint16 = 0.
-mut uint32 someUint32 = 0.
-mut uint64 someUint64 = 0.
-mut float32 someFloat32 = 0.0.
-someFloat32 = 1.0.
-mut float64 someFloat64 = 0.0.
-mut bool someBool = false.
-someBool = true.
-mut char someChar = 'a'.
-someChar = 'b'.
-mut SomeStruct someStruct = SomeStruct{value1 = 0, value2 = 0}.
-someStruct:value1 = 1.
-mut SomeEnum someEnum = SomeEnum:Option1.
-someEnum = SomeEnum:Option2.
-mut int32[] someInt32Array[] = 1, 2, 3.
-someIntArray[] = 4, 5, 6.
-someIntArray[0] = 10.
-mut char<> someCharList<> = "something".
-someCharList<> = "pimp".
-someCharList<0> = 's'.
-//with the exception of struct/enum definition
-mut struct SomeStruct{int32 value1, int32 value2}   //not possible
-mut enum SomeEnum{Option1, Option2}     //not possible
-///////////////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////// Arithmetic Operators ///////////////////////////////////////
-// Addition: +, Subtraction: -, Multiplication: *, Division: / 
-int32 value1 = 1 + 1.
-int32 value2 = 10 - 5.
-int32 value3 = 5 * 5.   /*if possible: */ 5 ⋅ 5. /*or: */ 5 × 5.
-int32 value4 = 10 / 2.  /*if possible: */ 10 ÷ 2.
-int32 value5 = 11 % 4.  //may have a Remainder() function instead
-///////////////////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////// Precedence and Grouping /////////////////////////////////////
-//expressions within parenthesis are evaluated before the rest of an expression
-int32 average = (5 + 5) / 2.                //10 / 2. //5
-int32 something = ((2 * 2) / (5 - 3)) / 2.  //(4 / 2) / 2. //2 / 2. //1
-///////////////////////////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////// Control Flow /////////////////////////////////////////
-//if
-    if true{DoSomething().}
-    else if false{DoSomethingElse().}
-    else{DoAnotherThing().}
-
-//while
-    while true{     //or a condition that evaluates to true
-        DoSomething().
-        //restart keyword
-        //exit keyword
-    }
-///////////////////////////////////////////////////////////////////////////////////////////
-
-/////////////////////////////// Logical Operators /////////////////////////////////////////
-//not
-if not true{}
-
-//or
-if true or false{}
-
-//and
-if true and false{}
-///////////////////////////////////////////////////////////////////////////////////////////
-
-//////////////////////////////// Comparison Operators /////////////////////////////////////
-//equality: ==
-    if someBool == true{DoShit().}
-    /*if possible: */ if someBool = true{DoShit().}
-// not equal
-    if 1 not= 5{}
-    /*if possible: */ if 1 ≠ 5{}
-
-// greater/lesser: >, less than: <, greater or equal to: >=, less than or equal to: <=
-    if 10 > 5{}
-    if 5 < 10{}
-    if 10 >= 10{}
-    /*if possible: */ if 10 ≥ 10{}
-    if 5 <= 5{}
-    /*if possible: */ if 5 ≤ 5{}
-///////////////////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////// Functions ///////////////////////////////////////////
-//Definition: function FunctionName(inputParameterType inputParameterName) returns type{/*.*/}
-    function SomeFunction(int32 value) returns int32{
-        return value + 1.
-    }
-//Use:
-    int32 startingValue = 5.
-    int32 result = SomeFunction(value = startingValue).
-
-//functions that return a value are meaningfully equivalent to that value
-    function OnePlusOne() returns int32{return 2.}
-    int32 value = OnePlusOne().
-        //is the same as
-    int32 value = 2.
-
-//this applies when using function calls as function inputs
-    function PrintOnePlusOne(int32 input){
-        PrintLine("{}", input).
-    }
-    PrintOnePlusOne(input = OnePlusOne()). //outputs 2
-
-//function parameters cannot be mutated
-    function ChangeValue(mut int32 input) returns int32{
-        input = input + 1.  //not allowed
-        return input.
-    }
-    //create new variable instead
-    function ChangeValue(int32 input) returns int32{
-        int32 changedInput = input + 1.
-        return changedInput.
-        //or
-        return input + 1.   //this effectively imitates creating a new variable and returning it
-    }
-
-//is it possible to have function param names optional?
-    function SomeFunction(int32 input1, int32 input2){}
-    SomeFunction(input1 = 5, input2 = 10).
-    //or
-    SomeFunction(5, 10).
-    //or
-    SomeFunction(5, input2 = 10).
-///////////////////////////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////////// Scope ////////////////////////////////////////////
-//variable are only viable in their own or lesser scope, unless explicitly passed to another scope
-    mut int32 value = 5.
-    if something{
-        value = 6.
-    }
-    //this is valid because value is used in a lesser scope
-
-    mut int32 value = 5.
-    function ChangeValue(){
-        value = 6.
-    }
-    //this is not valid. a function cannot access variables outside of its own scope.
-
-    mut int32 value = 5.
-    function ChangeValue(int32 input) returns int32{
-        return input + 1.
-    }
-    value = ChangeValue(input = value).
-    //this is valid because value was passed into the functions scope.
-///////////////////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////// Ownership/Borrowing /////////////////////////////////////
-//Passing Ownership:
-    int32 a = 5.
-    int32 b = AddOne(input = a).    //ownership of data in var a is passed to the function variable
-                                    //input. data stored in input is dropped from memory when scope 
-                                    //of function ends. a is no longer usable.
-    PrintLine("{}", a). // error
-    function AddOne(int32 input) returns int32{
-        return input + 1.
-    }
-//However:
-    mut int32 a = 5.
-    a = AddOne(input = a).          //ownership of data in var a is passed to the function variable
-                                    //input. ownership of data in input is passed to var a before
-                                    //function scope ends. a is still usable.
-    PrintLine("{}", a). 
-
-//Passing reference:
-    mut int32 a = 2.
-    //possibly use (ref input = ref a)
-    a = AddOneByReference(input = ref a).   //a reference to data in var a is passed to the function 
-                                            //variable input. a is reassigned as the owner of the
-                                            //return data before function scope ends. only the
-                                            //reference is dropped from memory when function scope
-                                            //ends. a is still usable.
-    PrintLine("{}", a). //no error
-    function AddOneByReference(ref int32 input) returns int32{
-        return deref input + 1. //deref means use the value at reference/pointer location
-    }
-
-//Pass a copy of data:
-    //another potential. not decided
-    mut int32 a = 5.
-    a = AddOneByCopy(input = copy a).   //ownership of a is not passed into function. a copy of a's 
-                                        //data is allocated to memory for the duration of function 
-                                        //scope. a is still usable. This is efficient for stack 
-                                        //allocated variables, but not heap allocated variables.
-    PrintLine("{}", a). //no error. output 6.
-    function AddOneByCopy(copy int32 input) returns int32{
-        return input + 1.
-    }
-
-//References and scope:
-    ref int32 a = SomeFunction().       //ownership of a reference cannot be passed to a variable 
-                                        //residing in a greater scope than the referenced data.
-                                        //the data in b is cleared from memory when the function 
-                                        //scope ends. this would mean a owns a reference to a 
-                                        //location in memory with no data. This is not allowed, 
-                                        //and should cause an error.
-    PrintLine("{}", deref a).
-    function SomeFunction() returns ref int32{
-        int32 b = 5.
-        return ref b.
-    }
-///////////////////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////// MODULES /////////////////////////////////////////////
-    module SomeModule{
-        module SomeSubModule{
-            function SomeFunction(){}
-        }
-    }
-//or
-    module SomeModule::SomeSubModule{
-        function SomeFunction(){}
-    }
-////////////////////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////// Accessibility ////////////////////////////////////////
-//public and use keywords. items accessed outside of scope need public keyword
-    /*use of a module will not include functions/structs/enums unless specifically included
-    in use statement*/
-public module SomeModule{
-    public module SomeSubModule{
-        public function DoShit(){}
-    }
-    module AnotherSubModule{}
-}
-    //public sub modules to a public module can be rewritten as
-    public SomeModule::SomeSubModule{}
-    //but non public sub modules to a public module cannot
-    /*not possible*/ public SomeModule::AnotherSubModule{}
-
-module AnotherModule{
-    use SomeModule::SomeSubModule::DoShit.
-
-    function DoSomething(){
-        DoShit().
-    }
-}
-//or
-module AnotherModule{
-    use SomeModule::SomeSubModule.
-
-    function DoSomething(){
-        SomeSubModule::DoShit().
-    }
-}
-
-//semantic highlighting should be different for module components
-use SomeModule/*blue/green*/::SomeSubModule/*blue/green*/::SomeFunction/*yellow*/.
-use SomeModule/*blue/green*/::SomeSubModule/*blue/green*/::SomeStructOrEnum/*dark blue*/.
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-/////////////////////////// Revisiting structs and enums ////////////////////////////////////
-//structs
-    //not sure which struct style to choose
-        //accessibility and mutability
-        public struct SomeStruct{mut int32 value1, mut int32 value2}
-        //Use:
-        SomeStruct someStruct = SomeStruct{value1 = 0, value2 = 0}.
-        someStruct:value1 = 5.
-        /*I slightly prefer this style, because the struct is not what we are mutating, but
-        the values inside the struct*/
-    //or
-        public struct SomeStruct{int32 value1, int32 value2}
-        mut SomeStruct someStruct = SomeStruct{value1 = 0, value2 = 0}.
-        someStruct:value1 = 5.
-        //this style may be more visibly mutable outside the module with the struct definition
-
-//enums
-    //accessibility and mutability
-    public enum SomeEnum{Option1, Option2}
-    mut SomeEnum someEnum = SomeEnum:Option1.
-    someEnum = SomeEnum:Option2.
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////// Debug module/struct/enum lexing //////////////////////////////////
-    use SomeModule::SomeSubModule::ReturnSomeStructOrEnum.
-    SomeStructOrEnum someStructOrEnum = ReturnSomeStructOrEnum().
-
-    use SomeModule::SomeSubModule::SomeStruct.
-    SomeStruct someStruct = SomeStruct{value1 = 0, value2 = 0}.
-
-    use SomeModule::SomeSubModule::SomeEnum.
-    SomeEnum someEnum = SomeEnum:Option1.
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////////// Generics ///////////////////////////////////////////
-    //tentative design. likely to be altered over time
-
-    //Definition: generalized data type, used in place of a standard data type. compiler will 
-    //throw error if operations on incompatible data type are used
-    //function FunctionIdentifier(generic variableIdentifier){}
-    
-    function Square(generic input) returns generic{
-        return input * input.
-    }
-
-    PrintLine("{}", Square(input = 2)).     //outputs: 4
-    PrintLine("{}", Square(input = 2.0)).   //outputs: 4.0
-    PrintLine("{}", Square(input = true)).  //error at compile. cannot square boolean type
-    //certain differing data types are compatible
-    PrintLine("{}", 2 * 2.0).   //outputs: 4.0
-
-    //supports generalized types in structs
-    struct SomeStruct{
-        generic value1,
-        generic value2
-    }
-
-    //supports multiple generic types
-    function DoShit(generic input, generic input2) returns SomeOutput{
-        //return a struct with our generics as values
-        return SomeOutput someOutput = SomeOutput{value1 = input, value2 = input2}.
-    }
-    someVar = DoShit(input = 5, input2 = "TimesToDoShit").
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////// Unit Testing ///////////////////////////////////////////
-// tests can occur within a module to test private functions. they can also be in a separate .nlo 
-// file by using the "use" keyword, but cannot test private functions in this case.
-test SimpleTest(){
-    assert true.
-}
-
-[TestParameters(input = true, alwaysTrue = true)]
-[TestParameters(input = false, alwaysTrue = true)]
-test SimpleTestWithParameters(bool input, bool alwaysTrue){
-    assert input == alwaysTrue.
-}
-/////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////// Example Program ///////////////////////////////////////
-use StandardLibrary::InputOutput.
-use StandardLibrary::RandomNumberGenerator::Random.
+    use CommandLineInterface::PrintLine.
+    use CommandLineInterface::ReadLine.
+    use RandomNumberGenerator::GenerateRandom.
 
-PrintLine("Guess the number!").
-int32 secretNumber = Random(1, 100).
-int32 guess.
+    PrintLine("Guess the number!").
+    int32 secretNumber = GenerateRandom(1, 100).
+    mutable int32 guess = -1.
 
-while(true){
-    InputOutput::PrintLine("Please enter a whole number between 1 and 100").
+    while(true){
+        PrintLine("Please enter a whole number between 1 and 100").
+            
+        char<> userInput = ReadLine().
+            
+        if TypeOf(TryParse(userInput)) == TypeOf(guess) { //verify data types.  //if GetTypeOf(userInput) is GetTypeOf(guess)
+            guess = TryParse(userInput).
+        }
+        else{
+            PrintLine("Guess not valid.").
+            restart. // continue in c# // may not use restart. maybe retry/something else
+        }
+
         
-    //if input string cannot be parsed as another type, the string will be returned
-    generic/*var*/ userInput = InputOutput::TryParse(parseInput = InputOutput::ReadLine()). // maybe ReadLine():Parse().
-        
-    if TypeOf(userInput) == TypeOf(guess) { //verify data types.  //if GetTypeOf(userInput) is GetTypeOf(guess)
-        guess = userInput.
-    }
-    else{
-        InputOutput::PrintLine("Guess not valid.").
-        restart. // continue in c# // may not use restart. maybe retry/something else
+        if guess > secretNumber{
+            PrintLine("Too big.").
+            restart.
+        }
+        else if guess < secretNumber{
+            PrintLine("Too small.").
+            restart.
+        }
+        else{
+            PrintLine("You win!").
+            exit. // may not use break. maybe exitScope/endScope/finish/end/something else
+        }
+        /*
+        if an else{} is not included, compiler should show an error for unhandled conditions
+        */
     }
 
-    if guess is secretNumber{
-        InputOutput::PrintLine("You win!").
-        exit. // may not use break. maybe exitScope/endScope/finish/end/something else
-    }
-    else if guess > secretNumber{
-        InputOutput::PrintLine("Too big.").
-    }
-    else if guess < secretNumber{
-        InputOutput::PrintLine("Too small.").
-    }
-    /*
-    if an else{} is not included, compiler should show an error for unhandled conditions
-    */
-}
-/////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////// Example Module ////////////////////////////////////////
-public module PIDController{
-    public struct PIDGain{
-        generic p, 
-        generic i, 
-        generic d
-    }
-    public struct PIDOutput{
-        generic output,
-        generic error,
-        generic integral
-    }
-    public function Calculate(
-        generic setPoint, generic measuredValue, generic previousError, generic previousIntegral, ref PIDGain gain, generic deltaTime
-    ) returns PIDOutput{
-        generic error = setPoint - measuredValue.
-        generic integral = (previousIntegral + error) * deltaTime.
-        generic derivative = (error - previousError) / deltaTime.
+    public module PIDController{
+        public struct PIDGain{
+            generic p, 
+            generic i, 
+            generic d
+        }
+        public struct PIDOutput{
+            generic output,
+            generic error,
+            generic integral
+        }
+        public function Calculate(
+            generic setPoint, generic measuredValue, generic previousError, generic previousIntegral, ref PIDGain gain, generic deltaTime
+        ) returns PIDOutput{
+            generic error = setPoint - measuredValue.
+            generic integral = (previousIntegral + error) * deltaTime.
+            generic derivative = (error - previousError) / deltaTime.
 
-        return PIDOutput{
-            output = (error * deref gain.p) + (integral * deref gain.i) + (derivative * deref gain.d),
-            error = error,
-            integral = integral
+            return PIDOutput{
+                output = (error * deref gain:p) + (integral * deref gain:i) + (derivative * deref gain:d),
+                error = error,
+                integral = integral
+            }
         }
     }
-}
 
-module SomeModule{
-    use PIDController::PIDGain.
-    use PIDController::PIDOutput.
+    module SomeModule{
+        use PIDController::PIDGain.
+        use PIDController::PIDOutput.
 
-    function DoSomethingWithPID(){
-        PIDGain gain = PIDGain{p = 100.0, i = 0.0, d = 0.0}.
+        function DoSomethingWithPID(){
+            PIDGain gain = PIDGain{p = 100.0, i = 0.0, d = 0.0}.
 
-        PIDOutput output = Calculate(setPoint = 50.0, measuredValue = 0.0, previousError = 0.0, 
-            previousIntegral = 0.0, gain = ref gain, deltaTime = 0.02).
+            PIDOutput output = Calculate(setPoint = 50.0, measuredValue = 0.0, previousError = 0.0, 
+                previousIntegral = 0.0, gain = ref gain, deltaTime = 0.02).
+        }
     }
-}
-/////////////////////////////////////////////////////////////////////////////////////////////

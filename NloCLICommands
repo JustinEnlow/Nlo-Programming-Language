@@ -1,14 +1,15 @@
 // Console commands for My Programming Language. Tentatively "Nlo".
 
 //Creation
-nlo new lib YourLibraryName - creates new folder with specified project name
+nlo new YourProjectName - creates new folder with specified project name. project is not executable itself, 
+it is used by other programs
                                 folder contains:
                                     src subfolder:
                                     test subfolder:
                                         Test.nlo
                                     Nlo.toml
 
-nlo new prog YourProgramName - creates new folder with specified project name
+nlo new exe YourProgramName - creates new folder with specified project name. project is executable.
                                 folder contains:
                                     src subfolder:
                                         Main.nlo

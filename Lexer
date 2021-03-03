@@ -4,39 +4,6 @@ Begin by building lexical analyzer for the most basic of programs.
     statement terminator = "." followed by whitespace
     identifiers
     mathematical operators
-
-    example program:
-        //add 2 and 2       //Comment discarded. no token output
-        int32 a = 2 + 2.    //lexer tokens: Int32, Identifier, Assignment, IntegerLiteral, Plus, IntegerLiteral, StatementTerminator
-
-    Possible lexer design:
-        function Lexer(char[] input) returns TokenStream{ //not sure what kind of data structure to output for use by parser
-            //instantiate incrementer
-            mut int32 i = 0.
-
-            while i < input:Length{
-                char currentCharacter = input[i].
-                String possibleToken.
-
-                //add current character to string for comparison
-                possibleToken:Add(currentCharacter).
-
-                //compare string to available syntax tokens
-                if possibleToken == "SomeToken"{
-                    //add corresponding token to stream
-                    TokenStream:Add(SomeToken).
-                    //clear string, for further lexing
-                    possibleToken:Clear().
-                }
-                else{
-                    //rerun loop
-                }
-
-                //increment i to get next character in input
-                i = i + 1.
-            }
-        }
-
 ------------------------------------------------------------------------------------------------------------------------------
 
 Token               Example

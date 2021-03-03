@@ -39,15 +39,42 @@ The language is currently in the design phase, and is likely to change with my p
 * creates and compiles projects
 * handles dependencies
 * controlled through command line, using various control keywords
----
+
 create a new executable program in current directory
 ```
-nlo new prog ProjectName
+nlo new exe ProjectName
+```
+this creates the following:
+```
+ProjectName //new folder inside current directory
+|
+├──Nlo.toml //manifest. contains metadata required to compile
+|
+├──Src //source subfolder
+|   |
+|   └──Main.nlo //program entrance point
+|
+└──Tests //subfolder for tests not defined in src files
+    |
+    └──Test.nlo //example test file
 ```
 ---
 create a new library in current directory
 ```
 nlo new lib ProjectName
+```
+this creates the following:
+```
+ProjectName //new folder inside current directory
+|
+├──Nlo.toml //manifest. contains metadata required to compile
+|
+├──Src //source subfolder
+|   //no program entrance point, since this is a library
+|
+└──Tests //subfolder for tests not defined in src files
+    |
+    └──Test.nlo //example test file
 ```
 ---
 check for errors/warnings without building executable
