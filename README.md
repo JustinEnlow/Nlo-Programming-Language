@@ -91,6 +91,10 @@ run tests. output pass/fail to command line for each test
 ```
 nlo test
 ```
+example test output:
+```
+test ProgramName::ModuleName::TestName failed
+```
 ---
 build and run the program
 ```
