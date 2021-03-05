@@ -38,7 +38,7 @@
     }
 
     test MoreTests{
-        assert (1 + 1) == 2.
+        assert (1 + 1) = 2.
         assert 1 ≠ 2.
         assert 2 > 1.
         assert 1 < 2.
@@ -223,6 +223,25 @@
     mutable SomeEnum someEnum = SomeEnum:Option1.
     someEnum = SomeEnum:Option2.
 ///////////////////////////////// Ownership/Borrowing /////////////////////////////////////
+    //an "Owner" has sole control over a designated memory address and its stored data. only the owner can 
+    //mutate that data, and only if it is designated as mutable. ownership must be explicitly passed to another
+    //variable/function.
+
+    //Move or Pass Ownership
+        int32 int1 = 1. //variable initialized and memory allocated. int1 is the owner of data
+        int32 int2 = int1.  //int2 is now the owner of int1's data at that memory address.
+                            //int1 now invalid. it owns no data.
+    //Copy
+        int32 int1 = 1. //variable initialized and memory allocated. int1 is the owner of data
+        int32 int2 = copy int1. //int2 copies int1's data to a new memory address and is the owner
+                                //of that new copy. int1 is still valid as the owner of the original data
+    //Readonly Reference
+        int32 int1 = 1. //variable initialized and memory allocated. int1 is the owner of data
+        ref int32 int2 = ref int1.  //int2 stores a readonly reference to int1's data's memory address. int2
+        Print("{}", deref int2).    //can dereference to read the values at this address, but cannot mutate it.
+
+
+
     //Passing Ownership:
     function AddOne(int32 input) returns int32{
         return input + 1.
@@ -240,6 +259,28 @@
                                     //function scope ends. a is still usable.
     PrintLine("{}", a). 
 
+    //whilst the function owns the data from var a, it technically has read and write abilities if the data
+    //is mutable, but this is severely frowned upon, and should be avoided for concurrency reasons. to 
+    //accomplish this behavior, both the initial owner of the data and the function should specify that it is
+    //mutable
+        mutable int32 a = 5.
+        a = AddOne(input = a).
+        function AddOne(mutable int32 input) returns int32{}
+
+
+    //Pass a copy of data:
+    function AddOneByCopy(copy int32 input) returns int32{
+        return input + 1.
+    }
+
+    mutable int32 a = 5.
+    a = AddOneByCopy(input = copy a).   //ownership of a is not passed into function. a copy of a's 
+                                        //data is allocated to memory for the duration of function 
+                                        //scope. a is still usable. This is efficient for stack 
+                                        //allocated data, but may not be for heap allocated data.
+    PrintLine("{}", a). //no error. output 6.
+
+
     //Passing reference:
     function AddOneByReference(ref int32 input) returns int32{
         return deref input + 1. //deref means use the value at reference/pointer location
@@ -255,17 +296,6 @@
                                             //ownership of a is not changed
     PrintLine("{}", a). //no error
 
-    //Pass a copy of data: another potential. not decided
-    function AddOneByCopy(copy int32 input) returns int32{
-        return input + 1.
-    }
-
-    mutable int32 a = 5.
-    a = AddOneByCopy(input = copy a).   //ownership of a is not passed into function. a copy of a's 
-                                        //data is allocated to memory for the duration of function 
-                                        //scope. a is still usable. This is efficient for stack 
-                                        //allocated variables, but not heap allocated variables.
-    PrintLine("{}", a). //no error. output 6.
 
     //References and scope:
     function SomeFunction() returns ref int32{
@@ -290,9 +320,9 @@
     //fixed collection of known size at compile time
         //known size collections are value types: they are allocated on the stack like other 
         //values and an array object is a sequence of values, not a pointer to those values (as in C).
-        int32[4] sizedFixedCollection = [1, 2, 3, 4].    //might allow "= 1, 2, 3, 4." , in future
+        int32[4] sizedFixedCollection = [1, 2, 3, 4].
         //So from our examples above, int32[4] sizedFixedCollection = [1, 2, 3, 4]. will allocate 16 bytes 
-        //on the stack and executing int32[4] b = a; will copy 16 bytes. If you want a C-like array, you 
+        //on the stack and executing int32[4] b = copy a; will copy 16 bytes. If you want a C-like array, you 
         //have to explicitly make a pointer to the array, this will give you a pointer to the first element.
 
         //length should also be inferable by compiler
@@ -304,7 +334,25 @@
 
         }
 
-        //collections can be multidimensional
+    //fixed collection of unknown size at compile/run time
+        ref int32[] unsizedFixedCollection = ref [1, 2, 3, 4]. //uncommon use
+        //or
+        ref int32[] unsizedFixedCollection = ref sizedFixedCollection. //ref/pointer to sizedFixedCollection from above
+
+        function ReadFile(ref char[] inputText){            //more likely use
+            for each char currentCharacter in inputText{
+
+            }
+        }
+
+        ref ref int32[][] collection. //this could get wild...
+    
+    //dynamic collection 
+        int32<> dynamicallySizedCollection = <1, 2, 3, 4>.
+        Collection::Append(dynamicallySizedCollection, 5). //can we append with another dynamic collection? <5, 6, 7, 8>
+
+
+    //collections can be multidimensional
         char[3][12] months = [  //a length 12 collection of length 3 collections
             ['j', 'a', 'n'],
             ["feb"],
@@ -324,27 +372,10 @@
         sizedFixedCollection[1] //accesses the first element, which is 1
         sizedFixedCollection[1-4] //accesses elements 1 through 4, in order, which is 1 2 3 4
         sizedFixedCollection[1, 3] //accesses elements 1 and 3, in order, which is 1 3
-        //multidimensional array access is similar
+        //multidimensional collection access is similar
         months[1][1] //outputs j
         months[1-3][1] //outputs jan
         months[1][1-3] //outputs jfm
-
-    //fixed collection of unknown size at compile/run time
-        ref int32[] unsizedFixedCollection = ref [1, 2, 3, 4]. //uncommon use
-        //or
-        ref int32[] unsizedFixedCollection = ref sizedFixedCollection. //ref/pointer to sizedFixedCollection from above
-
-        function ReadFile(ref char[] inputText){            //more likely use
-            for each char currentCharacter in inputText{
-
-            }
-        }
-
-        ref ref int32[][] collection. //this could get wild...
-    
-    //dynamic collection 
-        int32<> dynamicallySizedCollection = <1, 2, 3, 4>.
-        Collection::Append(dynamicallySizedCollection, 5). //can we append with another dynamic collection? <5, 6, 7, 8>
 //////////////////////////////// Custom data types ////////////////////////////////////////
     //Structs
         //Definition: struct StructName{type valueName}
@@ -413,3 +444,4 @@
     // tests can occur within a module to test private functions. they can also be in a separate .nlo 
     // file by using the "use" keyword, but cannot test private functions in this case.
 ///////////////////////////////////// Concurrency ///////////////////////////////////////////
+    // figure out how concurrency should be implemented
