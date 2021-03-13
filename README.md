@@ -21,10 +21,13 @@ The language is currently in the design phase, and is likely to change with my p
 * names of modules, variables, and functions should express their design/intent as clearly as possible. for example, instead of stdlib, StandardLibrary is more desirable
 * built in types may be abbreviated, but their meaning should be clear at first use to anyone familiar with programming, and easily learnable by programming newcomers
 * these conventions are not enforcable, but /*idomatic*/ a desired characteristic of the language
+* implementations should be hidden in the compiler as little as possible. code should fully express what is happening.
 ### Safety
 * eliminate null pointers, dangling pointers, data races
 * safe parallel processing
+* true encapsulation. variables are not publicly accessible, they must be explicitly passed to functions for use/alteration.
 ### Data ownership system
+* Only one entity at any time has write control over a given value.
 ### Exhaustive control flow and enum matching
 * no undefined behavior
 ### Informative error/warning messages
