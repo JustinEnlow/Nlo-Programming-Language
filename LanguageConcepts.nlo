@@ -2,8 +2,8 @@
     // Addition: +, Subtraction: -, Multiplication: *, Division: / 
     1 + 1.
     10 - 5.
-    5 * 5.   /*if possible: */ 5 ⋅ 5. /*or: */ 5 × 5.
-    10 / 2.  /*if possible: */ 10 ÷ 2.
+    5 * 5.
+    10 / 2.
     //11 % 4.  //may have a Remainder() function instead
 
     //order of operations
@@ -12,19 +12,14 @@
 //////////////////////////////// Comparison Operators /////////////////////////////////////
     //equality: ==
         1 + 1 == 2.
-        /*ideally: */ 1 + 1 = 2.
     // not equal
-        1 not= 2.
-        1 /= 2.
-        /*ideally: */ 1 ≠ 5.
+        1 =/= 2.
 
     // greater/lesser: >, less than: <, greater or equal to: >=, less than or equal to: <=
         10 > 5.
         5 < 10.
         10 >= 10.
-        /*ideally: */ 10 ≥ 10.
         5 <= 5.
-        /*ideally: */ 5 ≤ 5.
 /////////////////////////////// Logical Operators /////////////////////////////////////////
     //not
         not true.
@@ -38,12 +33,12 @@
     }
 
     test MoreTests{
-        assert (1 + 1) = 2.
-        assert 1 ≠ 2.
+        assert (1 + 1) == 2.
+        assert 1 =/= 2.
         assert 2 > 1.
         assert 1 < 2.
-        assert 1 ≥ 1.
-        assert 1 ≤ 1.
+        assert 1 >= 1.
+        assert 1 <= 1.
 
         assert not true.
     }
@@ -66,6 +61,8 @@
     bool        //a boolean value. true or false
     
     char        //a single character which can be a letter, number or symbol. 'a', '!', '1'
+
+    pointer     //a memory location, with type/size
 /////////////////////////////////// Variables /////////////////////////////////////////////
     //variables are assigned a value, and are used in place of that value in code.
     int32 someInt = -1.
@@ -78,16 +75,6 @@
     //the file.
     int32 example.
     example = 54465432.
-////////////////////////////// Expressions vs Statements //////////////////////////////////
-    //expressions evaluate to a value
-        x + 1 = 2. //= behaves as a comparison operator in this context
-    //statements do something. assignment, function calls, etc.
-        int32 y = x + 1. //= behaves as an assignment operator in this context
-
-    bool someBool = x + 1 = 2. //= assigns as part of a statement, and compares as part of an expression
-                                //when x + 1 is equivalent to 2, someBool is true
-                                //otherwise it is false
-                                //this is bad program design in my opinion, but should be possible
 //////////////////////////////////// Control Flow /////////////////////////////////////////
     //if
         if true{}
@@ -103,7 +90,7 @@
         }
 
         int32 i = 0.
-        while i ≤ 100{
+        while i <= 100{
             //DoSomething
         }
     //foreach
@@ -120,8 +107,7 @@
     function SomeFunction(){} 
     //Use:
     int32 startingValue = 5.
-    int32 result = SomeFunction(value = startingValue).
-    int32 result = SomeFunction(startingValue). //should this be used instead? or support both?
+    int32 result = SomeFunction(startingValue).
 
     //functions that return a value are meaningfully equivalent to that value
     function OnePlusOne() returns int32{return 2.}
@@ -133,7 +119,7 @@
     function PrintOnePlusOne(int32 input){
         PrintLine("{}", input).
     }
-    PrintOnePlusOne(input = OnePlusOne()). //outputs 2
+    PrintOnePlusOne(OnePlusOne()). //outputs 2
 //////////////////////////////////////// Scope ////////////////////////////////////////////
     //variables are only viable in their own or lesser scope, unless explicitly passed to another scope
     mutable int32 value = 5.
@@ -152,7 +138,7 @@
     function ChangeValue(int32 input) returns int32{
         return input + 1.
     }
-    value = ChangeValue(input = value).
+    value = ChangeValue(value).
     //this is valid because value was passed into the functions scope.
 ///////////////////////////////////// MODULES /////////////////////////////////////////////
     //modules are use to group related logic and struct/enum definitions
@@ -222,6 +208,28 @@
     
     mutable SomeEnum someEnum = SomeEnum:Option1.
     someEnum = SomeEnum:Option2.
+//////////////////////////////// Pointers/References //////////////////////////////////////
+    int8 a = 5.
+    pointer int8 b = ref a. 
+    
+    //should compiler infer size/type based on what is assigned?
+    /* for example:
+        int a = 5.
+        pointer b = ref a.  the pointer would have size/type of the variable a
+    */
+
+    //typing ref before a variable means we are using its location in memory, and not the value itself
+
+    //a pointer is a variable whos data is a memory location. size/type is also needed to perform dereferencing/array manipulation
+
+    function AddOne(pointer int8 input) returns int8{
+        return deref input + 1.
+    }
+
+    /*
+    im currently thinking that a mutable pointer would only allow for mutating the stored memory address. not for mutating
+    data at that address. this behavior would instead be accomplished through moving ownership.
+    */
 ///////////////////////////////// Ownership/Borrowing /////////////////////////////////////
     //an "Owner" has sole control over a designated memory address and its stored data. only the owner can 
     //mutate that data, and only if it is designated as mutable. ownership must be explicitly passed to another
@@ -261,8 +269,8 @@
 
     //pass Readonly Reference to other variables
         int32 int1 = 1. //variable initialized and memory allocated. int1 is the owner of data
-        ref int32 int2 = ref int1.  //int2 stores a readonly reference to int1's data's memory address. int2
-        Print("{}", deref int2).    //can dereference to read the values at this address, but cannot mutate it.
+        pointer int32 int2 = ref int1.  //int2 is a pointer to int1's data's memory address. int2
+        Print("{}", deref int2).        //can dereference to read the values at this address, but cannot mutate it.
         /*
                 [int1]
                 +---+
@@ -284,7 +292,7 @@
     }
     
     int32 a = 5.
-    int32 b = AddOne(input = a).    //ownership of data in var a is passed to the function variable
+    int32 b = AddOne(a).    //ownership of data in var a is passed to the function variable
                                     //input. data stored in input is dropped from memory when scope 
                                     //of function ends. a is no longer usable.
     PrintLine("{}", a). // error
@@ -302,7 +310,7 @@
     }
 
     mutable int32 a = 5.
-    a = AddOne(input = a).          //ownership of data in var a is passed to the function variable
+    a = AddOne(a).          //ownership of data in var a is passed to the function variable
                                     //input. ownership of data in input is passed to var a before
                                     //function scope ends. a is still usable.
     PrintLine("{}", a). 
@@ -318,7 +326,7 @@
         //will be inaccessible by other programs, while its data is owned within the function. to accomplish this 
         //behavior, both the initial owner of the data and the function should specify that it is mutable
         mutable int32 a = 5.
-        a = AddOne(input = a).
+        a = AddOne(a).
         function AddOne(mutable int32 input) returns int32{}
 
 
@@ -330,7 +338,7 @@
     }
 
     mutable int32 a = 5.
-    a = AddOneByCopy(input = copy a).   //ownership of a is not passed into function. a copy of a's 
+    a = AddOneByCopy(copy a).   //ownership of a is not passed into function. a copy of a's 
                                         //data is allocated to memory for the duration of function 
                                         //scope. a is still usable. This is efficient for stack 
                                         //allocated data, but may not be for heap allocated data.
@@ -346,13 +354,13 @@
 
 
     //Passing reference to function variables
-    function AddOneByReference(ref int32 input) returns int32{
+    function AddOneByReference(pointer int32 input) returns int32{
         return deref input + 1. //deref means use the value at reference/pointer location
     }
 
     mutable int32 a = 2.
     //possibly use (ref input = ref a)
-    a = AddOneByReference(input = ref a).   //a reference to data in var a is passed to the function 
+    a = AddOneByReference(ref a).   //a reference to data in var a is passed to the function 
                                             //variable input. a is reassigned as the owner of the
                                             //return data before function scope ends. only the
                                             //reference is dropped from memory when function scope
@@ -369,12 +377,12 @@
 
 
     //References and scope:
-    function SomeFunction() returns ref int32{
+    function SomeFunction() returns pointer int32{
         int32 b = 5.
         return ref b.
     }
 
-    ref int32 a = SomeFunction().       //ownership of a reference cannot be passed to a variable 
+    pointer int32 a = SomeFunction().       //ownership of a reference cannot be passed to a variable 
                                         //residing in a greater scope than the referenced data.
                                         //the data in b is cleared from memory when the function 
                                         //scope ends. this would mean a owns a reference to a 
@@ -409,6 +417,12 @@
 
         //size of fixed collections must be specified when passed to functions
         function DoSomethingWithSet(int32|4| someSet){}
+            /*
+                    [set]
+                    +---+---+---+---+
+            stack   | 1 | 2 | 3 | 4 |
+                    +---+---+---+---+
+            */
 
 
     //Array: fixed size collection set at run time, although can be set at compile time too
@@ -422,15 +436,37 @@
             }
         }
         //an array is a pointer to heap memory, and length
+            /*
+                    [array]
+                    +---+---+
+            stack   |ptr| 4 |   //pointer, length
+                    +-|-+---+
+                      ↓
+                    +---+---+---+---+
+            heap    | 1 | 2 | 3 | 4 |
+                    +---+---+---+---+
+            */
 
     
     //List: dynamic size collection
-        int32<> dynamicallySizedCollection = <1, 2, 3, 4>.
-        Collection::Append(dynamicallySizedCollection, 5). //can we append with another dynamic collection? <5, 6, 7, 8>
+        int32<> list = <1, 2, 3, 4>.
+        Collection::Append(list, 5). //can we append with another dynamic collection? <5, 6, 7, 8>
         //a list is a pointer to heap memory, length, and capacity
         //when length exceeds capacity, a new block of memory is allocated, large enough to hold the extra data, and
         //values are copied to this new location. the old memory block is freed
+            /*
+                    [list]
+                    +---+---+---+
+            stack   |ptr| 4 | 8 |   //pointer, length, capacity
+                    +-|-+---+---+
+                      ↓
+                    +---+---+---+---+---+---+---+---+
+            heap    | 1 | 2 | 3 | 4 |   |   |   |   |
+                    +---+---+---+---+---+---+---+---+
+            */
 
+    
+    
     //collections can be multidimensional
         char|3||12| months = |  //a length 12 collection of length 3 collections
             |'j', 'a', 'n'|,
@@ -446,6 +482,25 @@
             |"nov"|,
             |"dec"|
         |.
+
+        //
+        char[][] months = [
+            ["january"],
+            ["february"],
+            ["march"],
+            ["april"],
+            ["may"],
+            ["june"],
+            ["july"],
+            ["august"],
+            ["september"],
+            ["october"],
+            ["november"],
+            ["december"]
+        ].
+        //unlike a set, an array can contain other arrays of unequal size, because it just points to heap memory
+        //could also use a set of arrays, for this example. char[]|| months. so months would be a set of wide pointers
+        //stored on the stack, that point to heap
 
         //collection element access and use
         array[1] //accesses the first element, which is 1
@@ -471,7 +526,7 @@
             someStruct:value1 = 0.
             someStruct:value2 = 1.
         //
-            DoSomethingWithStructValues(param1 = someStruct:value1).
+            DoSomethingWithStructValues(someStruct:value1).
 
 
     //Enumerations
@@ -501,9 +556,9 @@
         return input * input.
     }
 
-    PrintLine("{}", Square(input = 2)).     //outputs: 4
-    PrintLine("{}", Square(input = 2.0)).   //outputs: 4.0
-    PrintLine("{}", Square(input = true)).  //error at compile. cannot square boolean type
+    PrintLine("{}", Square(2)).     //outputs: 4
+    PrintLine("{}", Square(2.0)).   //outputs: 4.0
+    PrintLine("{}", Square(true)).  //error at compile. cannot square boolean type
     //certain differing data types are compatible
     PrintLine("{}", 2 * 2.0).   //outputs: 4.0
 
@@ -518,7 +573,7 @@
         if someBool == true{return input.}
         else {return input2.}
     }
-    generic someVar = DoShit(input = 5, input2 = "TimesToDoShit").
+    generic someVar = DoShit(5, "TimesToDoShit").
 
         
         //references might have to automatically dereference to properly support generics in certain scenarios
