@@ -43,18 +43,21 @@
         assert not true.
     }
 ///////////////////////////////// Standard Data Types /////////////////////////////////////
+    int         //size determined by execution environment
     int8        //an 8 bit positive or negative integer. from -128(-1 * 2^7) to 127(2^7 - 1)
     int16       //a 16 bit positive or negative integer. from −32,768 (−1 × 2^15) to 32,767 (2^15 − 1)
     int32       //a 32 bit positive or negative integer. from -2,147,483,648(-1 * 2^31) to 2,147,483,647(2^31 -1)
     int64
     int128
     
+    uint        //size determined by execution environment
     uint8       //an 8 bit positive integer. from 0 to 255(2^8 - 1)
     uint16      //a 16 bit positive integer. from 0 through 65,535 (2^16 − 1)
     uint32      //a 32 bit positive integer. from 0 through 4,294,967,295(2^32 - 1)
     uint64
     uint128
     
+    float       //size determined by execution environment
     float32     //a 32 bit positive or negative floating point number. from x to x
     float64
     
@@ -81,12 +84,14 @@
         else if false{}
         else{}
 
+    //loop      conditionless loop
+        loop{
+            //DoSomething().
+        }
+
     //while
         while true{
             //DoSomething
-
-            //restart keyword
-            //exit keyword
         }
 
         int32 i = 0.
@@ -98,6 +103,24 @@
             mutable int32 total = 0.
             total = total + currentValue.
         }
+
+    //match         //pattern matching.
+        SomeEnum someEnum = SomeEnum:Option1.
+        match someEnum{
+            Option1{/*DoSomething*/},
+            Option2{/*DoSomethingElse*/},
+        }.
+
+        match input{
+            "bin"{/*DoSomething().*/},
+            "lib"{/*DoSomethine().*/}
+        }
+
+    //loop execution keywords
+        //restart
+            //ceases execution of current loop iteration, and restarts loop from next iteration
+        //exit
+            //completely ceases execution of loop
 ///////////////////////////////////// Functions ///////////////////////////////////////////
     //Definition: function FunctionName(inputParameterType inputParameterName) returns type{/*.*/}
     function SomeFunction(int32 value) returns int32{
@@ -592,7 +615,7 @@
     // figure out how concurrency should be implemented
 
 ///////////////////////////////////// Constants /////////////////////////////////////////////
-    public const int32 TAU = 6.28.
+    public const float32 TAU = 6.28.
     //constants are replaced with their value at compile time, so no memory is ever allocated to hold them. they are simply an
     //alias for their value.
     //this is distinct from variables. variables are allocated memory at run time. 

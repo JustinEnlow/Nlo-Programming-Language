@@ -1,0 +1,16 @@
+//tuple
+int a.
+(a, float b) = SomeFunction().
+
+SomeFunction() returns (int, float){
+    int c = 100.
+    return (c, 25.3).
+}
+
+
+//struct tuple/named tuple              //is this better?
+struct Color(uint, uint, uint)          struct Color{uint, uint, uint}
+struct Point(float, float, float)       struct Point{float, float, float}
+
+Color color = Color(255, 0, 0).         Color color = Color{255, 0, 0}.
+Point origin = Point(0.0, 0.0, 0.0).    Point origin = Point{0.0, 0.0, 0.0}.

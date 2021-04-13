@@ -1,4 +1,0 @@
-//Main.nlo does not require modules or functions. This is a base level program.
-use StandardLibrary::InputOutput.
-
-InputOutput::PrintLine("Fuck off, World!").

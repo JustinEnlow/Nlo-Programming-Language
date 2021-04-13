@@ -1,9 +1,10 @@
 //////////////////////////////// Base level program ///////////////////////////////////////
-    //modules and functions not necessary. filename will always be Main.nlo. not used in libraries
-    /*Main.nlo is the only .nlo file that does not require a module with the project and file name*/
+    //main is the entry point to the program
     use CommandLineInterface::PrintLine.
 
-    PrintLine("Fuck off, world!").
+    function Main(){
+        PrintLine("Fuck off, world!").
+    }
 
 
 ///////////////////////////////////// Example Program ///////////////////////////////////////
@@ -19,7 +20,8 @@
         PrintLine("Please enter a whole number between 1 and 100").
             
         char<> userInput = ReadLine().
-            
+
+        // typeof TryParse(TrimWhitespace(userInput)) == typeof guess
         if TypeOf(TryParse(userInput)) == TypeOf(guess) { //verify data types.  //if GetTypeOf(userInput) is GetTypeOf(guess)
             guess = TryParse(userInput).
         }
@@ -45,6 +47,56 @@
         if an else{} is not included, compiler should show an error for unhandled conditions
         */
     }
+
+//  rust style
+    enum Result{
+        Ok(generic),
+        Error(generic),
+    }
+    enum Comparison{
+        Less,
+        Greater,
+        Equal,
+    }
+
+    function TrimWhitespace(pointer char<> input) returns char<>{//trims whitespace on either side of input}
+    function TryParse(pointer char<> input) returns Result{}
+    function Compare(generic input1, generic input2) returns Comparison{
+        if input1 < input2{return Comparison:Less.}
+        else if input1 > input2{return Comparison:Greater.}
+        else{return Comparison:Equal.}
+    }
+
+
+    function Main(){
+        PrintLine("Guess the number!").
+        uint secretNumber = GenerateRandom(1, 100).
+
+        loop{
+            PrintLine("Please enter a whole number between 1 and 100.").
+
+            char<> userInput = ReadLine().
+
+            //how does this work when there is an error? a value is not being assigned to guess.
+            uint guess = match TryParse(TrimWhitespace(userInput)) {
+                Ok(num){num},
+                Error(){
+                    PrintLine("Guess not valid. Please enter a number.").
+                    restart.
+                }
+            }.
+
+            match Compare(guess, secretNumber) {
+                Less{PrintLine("Too small.").},
+                Greater{PrintLine("Too big.").},
+                Equal{
+                    PrintLine("You win!").
+                    exit.
+                }
+            }.
+        }
+    }
+//
 
 
 ///////////////////////////////////// Example Module ////////////////////////////////////////
