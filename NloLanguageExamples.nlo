@@ -12,46 +12,13 @@
     use CommandLineInterface::ReadLine.
     use RandomNumberGenerator::GenerateRandom.
 
-    PrintLine("Guess the number!").
-    int32 secretNumber = GenerateRandom(1, 100).
-    mutable int32 guess = -1.
-
-    while(true){
-        PrintLine("Please enter a whole number between 1 and 100").
-            
-        char<> userInput = ReadLine().
-
-        // typeof TryParse(TrimWhitespace(userInput)) == typeof guess
-        if TypeOf(TryParse(userInput)) == TypeOf(guess) { //verify data types.  //if GetTypeOf(userInput) is GetTypeOf(guess)
-            guess = TryParse(userInput).
-        }
-        else{
-            PrintLine("Guess not valid.").
-            restart. // continue in c# // may not use restart. maybe retry/something else
-        }
-
-        
-        if guess > secretNumber{
-            PrintLine("Too big.").
-            restart.
-        }
-        else if guess < secretNumber{
-            PrintLine("Too small.").
-            restart.
-        }
-        else{
-            PrintLine("You win!").
-            exit. // may not use break. maybe exitScope/endScope/finish/end/something else
-        }
-        /*
-        if an else{} is not included, compiler should show an error for unhandled conditions
-        */
-    }
-
-//  rust style
     enum Result{
-        Ok(generic),
-        Error(generic),
+        Ok,
+        Error,
+    }
+    struct ValueResult{
+        result Result,
+        value generic
     }
     enum Comparison{
         Less,
@@ -59,8 +26,7 @@
         Equal,
     }
 
-    function TrimWhitespace(pointer char<> input) returns char<>{//trims whitespace on either side of input}
-    function TryParse(pointer char<> input) returns Result{}
+    function TryParseUInt(pointer char<> input) returns ValueResult{}
     function Compare(generic input1, generic input2) returns Comparison{
         if input1 < input2{return Comparison:Less.}
         else if input1 > input2{return Comparison:Greater.}
@@ -71,17 +37,18 @@
     function Main(){
         PrintLine("Guess the number!").
         uint secretNumber = GenerateRandom(1, 100).
+        mutable uint guess = 0.
 
-        loop{
+        while true{
             PrintLine("Please enter a whole number between 1 and 100.").
 
             char<> userInput = ReadLine().
 
-            //how does this work when there is an error? a value is not being assigned to guess.
-            uint guess = match TryParse(TrimWhitespace(userInput)) {
-                Ok(num){num},
-                Error(){
-                    PrintLine("Guess not valid. Please enter a number.").
+            ValueResult guessResult = TryParseUInt(userInput).
+            match guessResult:result{
+                Ok{guess = guessResult:value.},
+                Error{
+                    PrintLine("Guess not valid.").
                     restart.
                 }
             }.
@@ -96,8 +63,6 @@
             }.
         }
     }
-//
-
 
 ///////////////////////////////////// Example Module ////////////////////////////////////////
     public module PIDController{

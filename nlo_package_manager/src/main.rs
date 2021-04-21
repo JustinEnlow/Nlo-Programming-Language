@@ -76,9 +76,9 @@ fn create_project(project_name: &str, is_executable: bool){
     ignore_file.write(b"/target").expect("Couldn't write to file.");
     directory.pop();
 
-    let toml_text = format!("[package]\nname = {}\nversion = \"0.1.0\"\n\n[dependencies]", project_name);
     directory.push("Nlo.toml");
     let mut toml_file = fs::File::create(&directory).expect("Couldn't create file.");
+    let toml_text = format!("[package]\nname = {}\nversion = \"0.1.0\"\n\n[dependencies]", project_name);
     toml_file.write(&toml_text.as_bytes()).expect("Couldn't write to file.");
     directory.pop();
 

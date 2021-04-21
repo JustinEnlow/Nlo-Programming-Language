@@ -84,11 +84,6 @@
         else if false{}
         else{}
 
-    //loop      conditionless loop
-        loop{
-            //DoSomething().
-        }
-
     //while
         while true{
             //DoSomething
@@ -113,14 +108,15 @@
 
         match input{
             "bin"{/*DoSomething().*/},
-            "lib"{/*DoSomethine().*/}
-        }
+            "lib"{/*DoSomethine().*/},
+            else{} //matches any unhandled cases
+        }.
 
     //loop execution keywords
         //restart
-            //ceases execution of current loop iteration, and restarts loop from next iteration
+            //restarts execution of loop from beginning
         //exit
-            //completely ceases execution of loop
+            //ceases execution of loop
 ///////////////////////////////////// Functions ///////////////////////////////////////////
     //Definition: function FunctionName(inputParameterType inputParameterName) returns type{/*.*/}
     function SomeFunction(int32 value) returns int32{
@@ -164,7 +160,7 @@
     value = ChangeValue(value).
     //this is valid because value was passed into the functions scope.
 ///////////////////////////////////// MODULES /////////////////////////////////////////////
-    //modules are use to group related logic and struct/enum definitions
+    //modules are use to group related logic and custom type definitions
     module SomeModule::SomeSubModule{
         struct SomeStruct{
             int32 value1,
@@ -231,6 +227,14 @@
     
     mutable SomeEnum someEnum = SomeEnum:Option1.
     someEnum = SomeEnum:Option2.
+///////////////////////////////////// Constants /////////////////////////////////////////////
+    public const float32 TAU = 6.28.
+    //constants are replaced with their value at compile time, so no memory is ever allocated to hold them. they are simply an
+    //alias for their value.
+    //this is distinct from variables. variables are allocated memory at run time. 
+    //variables can be assigned return values from functions. constants can not, because the return values are not known at compile time.
+    //constants can be publicly accessed within source code, whereas variables must be explicitly passed.
+    //constants can not be mutated
 //////////////////////////////// Pointers/References //////////////////////////////////////
     int8 a = 5.
     pointer int8 b = ref a. 
@@ -423,7 +427,7 @@
     //all collections are bounds checked. all collections are 1 based, meaning the 1st element is addressed
     //as [1] or <1>. and not as 0, which is common to several programming languages.
     
-    //concepts based on Rust. check link for more info: 
+    //some concepts loosely based on Rust. reference link: 
     //https://aminb.gitbooks.io/rust-for-c/content/arrays/index.html
 
     //Set: fixed size collection known at compile time
@@ -489,50 +493,11 @@
             */
 
     
-    
-    //collections can be multidimensional
-        char|3||12| months = |  //a length 12 collection of length 3 collections
-            |'j', 'a', 'n'|,
-            |"feb"|,
-            |"mar"|,
-            |"apr"|,
-            |"may"|,
-            |"jun"|,
-            |"jul"|,
-            |"aug"|,
-            |"sep"|,
-            |"oct"|,
-            |"nov"|,
-            |"dec"|
-        |.
-
-        //
-        char[][] months = [
-            ["january"],
-            ["february"],
-            ["march"],
-            ["april"],
-            ["may"],
-            ["june"],
-            ["july"],
-            ["august"],
-            ["september"],
-            ["october"],
-            ["november"],
-            ["december"]
-        ].
-        //unlike a set, an array can contain other arrays of unequal size, because it just points to heap memory
-        //could also use a set of arrays, for this example. char[]|| months. so months would be a set of wide pointers
-        //stored on the stack, that point to heap
-
         //collection element access and use
         array[1] //accesses the first element, which is 1
         array[1-4] //accesses elements 1 through 4, in order, which is 1 2 3 4
         array[1, 3] //accesses elements 1 and 3, in order, which is 1 3
-        //multidimensional collection access is similar
-        months[1][1] //outputs j
-        months[1-3][1] //outputs jan
-        months[1][1-3] //outputs jfm
+
 //////////////////////////////// Custom data types ////////////////////////////////////////
     //Structs: might rename. the computer science term seems to be "record"
         //Definition: struct StructName{type valueName}
@@ -573,6 +538,7 @@
 
     //Definition: generalized data type, used in place of a standard data type. compiler will 
     //throw error if operations on incompatible data type are used
+    //generics operate at compile time, not run time
     //function FunctionIdentifier(generic variableIdentifier){}
     
     function Square(generic input) returns generic{
@@ -613,12 +579,3 @@
     // file by using the "use" keyword, but cannot test private functions in this case.
 ///////////////////////////////////// Concurrency ///////////////////////////////////////////
     // figure out how concurrency should be implemented
-
-///////////////////////////////////// Constants /////////////////////////////////////////////
-    public const float32 TAU = 6.28.
-    //constants are replaced with their value at compile time, so no memory is ever allocated to hold them. they are simply an
-    //alias for their value.
-    //this is distinct from variables. variables are allocated memory at run time. 
-    //variables can be assigned return values from functions. constants can not, because the return values are not known at compile time.
-    //constants can be publicly accessed within source code, whereas variables must be explicitly passed
-    //constants can not be mutated
