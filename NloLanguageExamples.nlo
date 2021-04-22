@@ -51,7 +51,7 @@
                     PrintLine("Guess not valid.").
                     restart.
                 }
-            }.
+            }
 
             match Compare(guess, secretNumber) {
                 Less{PrintLine("Too small.").},
@@ -60,7 +60,7 @@
                     PrintLine("You win!").
                     exit.
                 }
-            }.
+            }
         }
     }
 

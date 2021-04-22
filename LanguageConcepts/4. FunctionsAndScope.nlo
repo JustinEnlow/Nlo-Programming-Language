@@ -1,0 +1,52 @@
+///////////////////////////////////// Functions ///////////////////////////////////////////
+    /*
+    TODO: function explanation
+    */
+
+    
+    //Functions are defined in the following format
+    function SomeFunction(/*int inputParameter1, float inputParameter2*/)/*returns float*/{
+        //function logic
+        //return
+    }
+    //input parameters and return types are optional
+
+    
+    //Use:
+    int32 startingValue = 5.
+    int32 result = SomeFunction(startingValue).
+
+    
+    //functions that return a value are meaningfully equivalent to that value
+    function OnePlusOne() returns int32{return 2.}
+    int32 value = OnePlusOne().
+        //is the same as
+    int32 value = 2.
+
+    //this applies when using function calls as function inputs
+    function PrintOnePlusOne(int32 input){
+        PrintLine("{}", input).
+    }
+    PrintOnePlusOne(OnePlusOne()). //outputs 2
+
+    
+//////////////////////////////////////// Scope ////////////////////////////////////////////
+    //variables are only viable in their own or lesser scope, unless explicitly passed to another scope
+    mutable int32 value = 5.
+    if something{
+        value = 6.
+    }
+    //this is valid because value is used in a lesser scope
+
+    mutable int32 value = 5.
+    function ChangeValue(){
+        value = 6.
+    }
+    //this is not valid. a function cannot access variables outside of its own scope.
+
+    mutable int32 value = 5.
+    function ChangeValue(int32 input) returns int32{
+        return input + 1.
+    }
+    value = ChangeValue(value).
+    //this is valid because value was passed into the functions scope.

@@ -1,0 +1,40 @@
+//////////////////////////////////// Control Flow /////////////////////////////////////////
+    //if
+        if true{}
+        else if false{}
+        else{}
+
+    //while
+        while true{
+            //DoSomething
+        }
+
+        int32 i = 0.
+        while i <= 100{
+            //DoSomething
+        }
+        
+    //foreach
+        for each int32 currentValue in /*SomeCollection*/[0-10]{
+            mutable int32 total = 0.
+            total = total + currentValue.
+        }
+
+    //match         //pattern matching.
+        SomeEnum someEnum = SomeEnum:Option1.
+        match someEnum{
+            Option1{/*DoSomething*/},
+            Option2{/*DoSomethingElse*/},
+        }
+
+        match input{
+            "bin"{/*DoSomething().*/},
+            "lib"{/*DoSomethine().*/},
+            else{} //matches any unhandled cases
+        }
+
+    //loop execution keywords
+        //restart
+            //restarts execution of loop from beginning
+        //exit
+            //ceases execution of loop

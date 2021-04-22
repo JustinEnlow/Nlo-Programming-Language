@@ -1,0 +1,41 @@
+//////////////////////////////////////// Generics ///////////////////////////////////////////
+    //tentative design. likely to be altered over time
+
+    //Definition: generalized data type, used in place of a standard data type. compiler will 
+    //throw error if operations on incompatible data type are used
+    //generics are replaced by standard data types at compile time, not run time
+    //function FunctionIdentifier(generic variableIdentifier){}
+    
+    function Square(generic input) returns generic{
+        return input * input.
+    }
+
+    PrintLine("{}", Square(2)).     //outputs: 4
+    PrintLine("{}", Square(2.0)).   //outputs: 4.0
+    PrintLine("{}", Square(true)).  //error at compile. cannot square boolean type
+    //certain differing data types are compatible
+    PrintLine("{}", 2 * 2.0).   //outputs: 4.0
+
+    //supports generalized types in structs
+    struct SomeStruct{
+        generic value1,
+        generic value2
+    }
+
+    //supports multiple generic types
+    function DoShit(generic input, generic input2) returns generic{
+        if someBool == true{return input.}
+        else {return input2.}
+    }
+    generic someVar = DoShit(5, "TimesToDoShit").
+
+        
+        //references might have to automatically dereference to properly support generics in certain scenarios
+        function AddOne(generic input) returns int32{
+            return input + 1.
+        }
+
+        int32 a = 1.
+        int32 b = AddOne(a). //move ownership
+        int32 c = AddOne(copy a). //copy
+        int32 d = AddOne(ref a). //reference

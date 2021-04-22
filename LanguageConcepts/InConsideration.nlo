@@ -8,12 +8,18 @@ SomeFunction() returns (int, float){
 }
 
 
+///////////////////////////////////////////////////////////////////////////////////////
+
+
 //struct tuple/named tuple              //is this better?
 struct Color(uint, uint, uint)          struct Color{uint, uint, uint}
 struct Point(float, float, float)       struct Point{float, float, float}
 
 Color color = Color(255, 0, 0).         Color color = Color{255, 0, 0}.
 Point origin = Point(0.0, 0.0, 0.0).    Point origin = Point{0.0, 0.0, 0.0}.
+
+
+///////////////////////////////////////////////////////////////////////////////////////
 
 
 //multidimensional collections
@@ -57,6 +63,49 @@ Point origin = Point(0.0, 0.0, 0.0).    Point origin = Point{0.0, 0.0, 0.0}.
         months[1][1-3] //outputs jfm
 
 
+        //apparently there is something called alignment that this may not work with
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+
 //dynamic type
     //type determined at run time. vs compile time generics
     dynamic value = SomeFunction().
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//using multiple logic/types from a module
+use SomeModule::SomeSubModule::SomeFunction, SomeEnum, SomeStruct, SomeConstant.
+//vs
+use SomeModule::SomeSubModule::SomeFunction.
+use SomeModule::SomeSubModule::SomeEnum.
+use SomeModule::SomeSubModule::SomeStruct.
+use SomeModule::SomeSubModule::SomeConstant.
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//module use scope
+    //any function in the module can use the external module
+    module SomeModule{
+        use SomeOtherModule::SomeFunction.
+
+        function AFunction(){
+            SomeFunction().
+        }
+    }
+
+    //vs
+
+    //only this function can use the external module
+    module SomeModule{
+        function AFunction(){
+            use SomeOtherModule::SomeFunction.
+
+            SomeFunction().
+        }
+    }

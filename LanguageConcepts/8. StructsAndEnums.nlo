@@ -1,0 +1,35 @@
+//////////////////////////////// Custom data types ////////////////////////////////////////
+    //Structs: might rename. the computer science term seems to be "record"
+        //Definition: struct StructName{type valueName}
+            struct SomeStruct{int32 value1, int32 value2}
+        //Use:
+            SomeStruct someStruct = SomeStruct{value1 = 0, value2 = 1}.
+            SomeStruct someStruct = {value1 = 0, value2 = 1}. //should this be allowed?
+            SomeStruct someStruct = {0, 1}. //should this be allowed?
+
+            SomeStruct someStruct.
+            someStruct = SomeStruct{value1 = 0, value2 = 0}.
+
+            SomeStruct someStruct.
+            someStruct:value1 = 0.
+            someStruct:value2 = 1.
+        //
+            DoSomethingWithStructValues(someStruct:value1).
+
+
+    //Enumerations
+        //Definition: enum EnumName{Name1, Name2}
+            enum SomeEnum{Option1, Option2, Option3}
+        //Use:
+            SomeEnum someEnum = SomeEnum:Option1.
+        //or
+            SomeEnum someEnum.
+            someEnum = SomeEnum:Option1.
+        //
+            if someEnum = SomeEnum:Option3{
+                //DoSomeShit
+            }
+            else if someEnum = SomeEnum:Option2{
+                //DoOtherShit
+            }
+            else{}

@@ -1,0 +1,36 @@
+///////////////////////////////////// Mutability //////////////////////////////////////////
+    /*every variable in Nlo is immutable by default. variables can be made mutable with the mutable keyword*/
+    int32 value1 = 5.
+    value1 = 6. //wont compile. error: cannot mutate immutable variable
+
+    mutable int32 value2 = 5.
+    value2 = 6. //compiles with no issues
+
+    //all data types can be made mutable
+    mutable int8 someInt8 = 0.
+    someInt8 = 1.
+    
+    mutable float32 someFloat32 = 0.0.
+    someFloat32 = 1.0.
+    
+    mutable someBool = false.
+    someBool = true.
+    
+    mutable char someChar = 'a'.
+    someChar = 'b'.
+    
+    mutable SomeStruct someStruct = SomeStruct{value1 = 0, value2 = 0}.
+    someStruct:value1 = 1.
+    
+    mutable SomeEnum someEnum = SomeEnum:Option1.
+    someEnum = SomeEnum:Option2.
+
+    
+///////////////////////////////////// Constants /////////////////////////////////////////////
+    public const float32 TAU = 6.28.
+    //constants are replaced with their value at compile time, so no memory is ever allocated to hold them. they are simply an
+    //alias for their value.
+    //this is distinct from variables. variables are allocated memory at run time. 
+    //variables can be assigned return values from functions. constants can not, because the return values are not known at compile time.
+    //constants can be publicly accessed within source code, whereas variables must be explicitly passed.
+    //constants can not be mutated

@@ -1,0 +1,30 @@
+    //modules group related logic and custom type definitions
+    
+    //public and use keywords. items accessed outside of scope need public keyword
+        /*use of a module will not include functions/structs/enums unless specifically included
+        in use statement*/
+    public module SomeModule::SomeSubModule{
+        public struct SomeStruct{
+            int32 value1,
+            int32 value2
+        }
+        public enum SomeEnum{
+            Option1,
+            Option2
+        }
+        public function SomeFunction(int32 someInput) returns int32{
+            return someInput.
+        }
+        public const float PI = 3.14.
+    }
+
+    module AnotherModule{
+        use SomeModule::SomeSubModule.
+        use SomeModule::SomeSubModule::SomeFunction.
+
+        function DoSomething(){
+            SomeStruct someStruct = SomeSubModule::SomeStruct{value1 = 1, value2 = 2}.
+            SomeEnum someEnum = SomeSubModule::SomeEnum:Option1.
+            int32 value = SomeFunction(5).
+        }
+    }

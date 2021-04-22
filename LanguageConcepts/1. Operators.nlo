@@ -1,0 +1,33 @@
+////////////////////////////// Arithmetic Operators ///////////////////////////////////////
+    // Addition: +, Subtraction: -, Multiplication: *, Division: / 
+    1 + 1.
+    10 - 5.
+    5 * 5.
+    10 / 2.
+    //11 % 4.  //may have a Remainder() function instead
+
+    //order of operations
+    (5 + 5) / 2.                //10 / 2. //5
+    ((2 * 2) / (5 - 3)) / 2.  //(4 / 2) / 2. //2 / 2. //1
+
+
+//////////////////////////////// Comparison Operators /////////////////////////////////////
+    //equality: ==
+        1 + 1 == 2.
+    // not equal
+        1 =/= 2.
+
+    // greater/lesser: >, less than: <, greater or equal to: >=, less than or equal to: <=
+        10 > 5.
+        5 < 10.
+        10 >= 10.
+        5 <= 5.
+
+
+/////////////////////////////// Logical Operators /////////////////////////////////////////
+    //not   returns the opposite of the result of the given expression
+        not true.
+    //or    returns true if either or both conditions are true
+        true or false.
+    //and   returns true if both conditions are true
+        true and false.

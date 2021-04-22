@@ -1,0 +1,166 @@
+///////////////////////////////// Ownership/Borrowing /////////////////////////////////////
+    //an "Owner" has sole control over data at a specific memory address. only the owner can 
+    //mutate that data, and only if it is designated as mutable. ownership must be explicitly passed to another
+    //variable/function.
+
+    //Move or Pass Ownership to other variables
+        int32 int1 = 1. //variable initialized and memory allocated. int1 is the owner of data
+        int32 int2 = int1.  //int2 is now the owner of int1's data at that memory address.
+                            //int1 now invalid. it owns no data.
+        /*
+                [int1]
+                +---+
+        stack   | 1 |
+                +---+
+
+                [int1][int2]
+                +---+  +---+
+        stack   |   |  | 1 |
+                +---+  +---+
+        */
+
+    //Copy to other variables
+        int32 int1 = 1. //variable initialized and memory allocated. int1 is the owner of data
+        int32 int2 = copy int1. //int2 copies int1's data to a new memory address and is the owner
+                                //of that new copy. int1 is still valid as the owner of the original data
+        /*
+                [int1]
+                +---+
+        stack   | 1 |
+                +---+
+
+                [int1][int2]
+                +---+  +---+
+        stack   | 1 |  | 1 |
+                +---+  +---+
+        */
+
+    //pass Readonly Reference to other variables
+        int32 int1 = 1. //variable initialized and memory allocated. int1 is the owner of data
+        pointer int32 int2 = ref int1.  //int2 is a pointer to int1's data's memory address. int2
+        Print("{}", deref int2).        //can dereference to read the values at this address, but cannot mutate it.
+        /*
+                [int1]
+                +---+
+        stack   | 1 |
+                +---+
+
+                [int1][int2]
+                +---+  +---+
+        stack   | 1 |  |ref|
+                +---+  +-|-+
+                  ↑______|
+        */
+
+
+
+    //Passing Ownership to function variables
+    function AddOne(int32 input) returns int32{
+        return input + 1.
+    }
+    
+    int32 a = 5.
+    int32 b = AddOne(a).    //ownership of data in var a is passed to the function variable
+                                    //input. data stored in input is dropped from memory when scope 
+                                    //of function ends. a is no longer usable.
+    PrintLine("{}", a). // error
+        /*
+                [a]         [a][input]          [input][return]     [return][b]
+                +---+       +---+---+             +---+--------+     +---+---+
+        stack   | 5 |       |   | 5 |             | 5 |input+1 |     |   | 6 |
+                +---+       +---+---+             +---+--------+     +---+---+
+        */
+
+    //However:
+    function AddOne(mutable int32 input) returns int32{
+        input = input + 1.
+        return input.
+    }
+
+    mutable int32 a = 5.
+    a = AddOne(a).          //ownership of data in var a is passed to the function variable
+                                    //input. ownership of data in input is passed to var a before
+                                    //function scope ends. a is still usable.
+    PrintLine("{}", a). 
+        /*
+                [a]         [a][input]          [a][input]          [a][input]
+               +---+        +---+---+           +---+---+           +---+---+
+        stack  | 5 |        |   | 5 |           |   | 6 |           | 6 |   |
+               +---+        +---+---+           +---+---+           +---+---+
+        */
+
+        //whilst the function owns the data from var a, it technically has read and write abilities if the data
+        //is mutable, but this is severely frowned upon, and should be avoided for concurrency reasons. 'a's data
+        //will be inaccessible by other programs, while its data is owned within the function. to accomplish this 
+        //behavior, both the initial owner of the data and the function should specify that it is mutable
+        mutable int32 a = 5.
+        a = AddOne(a).
+        function AddOne(mutable int32 input) returns int32{}
+
+
+
+
+    //Pass copy to function variables
+    function AddOneByCopy(int32 input) returns int32{
+        return input + 1.
+    }
+
+    mutable int32 a = 5.
+    a = AddOneByCopy(copy a).   //ownership of a is not passed into function. a copy of a's 
+                                        //data is allocated to memory for the duration of function 
+                                        //scope. a is still usable. This is efficient for stack 
+                                        //allocated data, but may not be for heap allocated data.
+    PrintLine("{}", a). //no error. output 6.
+        /*
+                [a]         [a][input]      [a][input]      [a][input]
+                +---+       +---+---+       +---+---+       +---+---+
+        stack   | 1 |       | 1 | 1 |       | 1 | 2 |       | 2 |   |
+                +---+       +---+---+       +---+---+       +---+---+
+        */
+
+
+
+
+    //Passing reference to function variables
+    function AddOneByReference(pointer int32 input) returns int32{
+        return deref input + 1. //deref means use the value at reference/pointer location
+    }
+
+    mutable int32 a = 2.
+    //possibly use (ref input = ref a)
+    a = AddOneByReference(ref a).   //a reference to data in var a is passed to the function 
+                                            //variable input. a is reassigned as the owner of the
+                                            //return data before function scope ends. only the
+                                            //reference is dropped from memory when function scope
+                                            //ends. a is still usable.
+                                            //ownership of a is not changed
+    PrintLine("{}", a). //no error
+        /*
+                [a]         [a][input]      [a][input][return]      [a][input][return]
+                +---+       +---+---+       +---+-----+-----+       +---+-----+-----+
+                | 1 |       | 1 |ref|       | 1 | ref |ref+1|       | 2 |     |     |
+                +---+       +---+-|-+       +---+--|--+-|---+       +---+-----+-----+
+                              ↑___|           ↑____|____|
+        */
+
+
+    //References and scope:
+    function SomeFunction() returns pointer int32{
+        int32 b = 5.
+        return ref b.
+    }
+
+    pointer int32 a = SomeFunction().       //ownership of a reference cannot be passed to a variable 
+                                        //residing in a greater scope than the referenced data.
+                                        //the data in b is cleared from memory when the function 
+                                        //scope ends. this would mean a owns a reference to a 
+                                        //location in memory with no data. This is not allowed, 
+                                        //and should cause an error.
+    PrintLine("{}", deref a).
+        /*
+                [b]         [b][return]         [b][return][a]
+                +---+       +---+-----+         +---+-----+---+
+                | 5 |       | 5 | ref |         |   |     |ref|
+                +---+       +---+--|--+         +---+-----+-|-+
+                              ↑____|              ↑_________|
+        */

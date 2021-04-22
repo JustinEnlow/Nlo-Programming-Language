@@ -1,0 +1,46 @@
+///////////////////////////////// Standard Data Types /////////////////////////////////////
+
+    /*
+    Data types are ....
+    */
+
+    int         //size determined by execution environment
+    int8        //an 8 bit positive or negative integer. from -128(-1 * 2^7) to 127(2^7 - 1)
+    int16       //a 16 bit positive or negative integer. from −32,768 (−1 × 2^15) to 32,767 (2^15 − 1)
+    int32       //a 32 bit positive or negative integer. from -2,147,483,648(-1 * 2^31) to 2,147,483,647(2^31 -1)
+    int64
+    int128
+    
+    uint        //size determined by execution environment
+    uint8       //an 8 bit positive integer. from 0 to 255(2^8 - 1)
+    uint16      //a 16 bit positive integer. from 0 through 65,535 (2^16 − 1)
+    uint32      //a 32 bit positive integer. from 0 through 4,294,967,295(2^32 - 1)
+    uint64
+    uint128
+    
+    float       //size determined by execution environment
+    float32     //a 32 bit positive or negative floating point number. from x to x
+    float64
+    
+    bool        //a boolean value. true or false
+    
+    char        //a single character which can be a letter, number or symbol. 'a', '!', '1'
+
+    pointer     //a memory location, with type/size
+
+    
+/////////////////////////////////// Variables /////////////////////////////////////////////
+    //variables are assigned a value, and are used in place of that value in code.
+    int32 someInt = -1.
+    uint32 someUint = 1.
+    float64 someFloat = 1.1.
+    bool someBool = true.
+    char someChar = 'a'.
+
+    //variables can also be defined without a value, as long as the value is assigned elsewhere in 
+    //the file.
+    int32 example.
+    example = 54465432.
+
+    //note: all variables are immutable, meaning they cannot be altered after an initial value is assigned.
+    //mutability will be covered more in chapter 5

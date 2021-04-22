@@ -1,0 +1,20 @@
+////////////////////////////// Unit/Integration Testing /////////////////////////////////////
+    // tests can occur within a module to test private functions. they can also be in a separate .nlo 
+    // file by using the "use" keyword, but cannot test private functions in this case.
+
+
+//////////////////////////////////// Testing //////////////////////////////////////////////
+    test SimpleTest(){      //are parentheses required?
+        assert true.
+    }
+
+    test MoreTests{
+        assert (1 + 1) == 2.
+        assert 1 =/= 2.
+        assert 2 > 1.
+        assert 1 < 2.
+        assert 1 >= 1.
+        assert 1 <= 1.
+
+        assert not true.
+    }

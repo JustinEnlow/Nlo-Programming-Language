@@ -1,0 +1,22 @@
+//////////////////////////////// Pointers/References //////////////////////////////////////
+    int8 a = 5.
+    pointer int8 b = ref a. 
+    
+    //should compiler infer size/type based on what is assigned?
+    /* for example:
+        int a = 5.
+        pointer b = ref a.  the pointer would have size/type of the variable a
+    */
+
+    //typing ref before a variable means we are using its location in memory, and not the value itself
+
+    //a pointer is a variable whos data is a memory location. size/type is also needed to perform dereferencing/array manipulation
+
+    function AddOne(pointer int8 input) returns int8{
+        return deref input + 1.
+    }
+
+    /*
+    im currently thinking that a mutable pointer would only allow for mutating the stored memory address. not for mutating
+    data at that address. this behavior would instead be accomplished through moving ownership.
+    */

@@ -1,0 +1,74 @@
+//////////////////////////////////// Collections //////////////////////////////////////////
+    //all collections are bounds checked. all collections are 1 based, meaning the 1st element is addressed
+    //as [1] or <1>. and not as 0, which is common to several programming languages.
+    
+    //some concepts loosely based on Rust. reference link: 
+    //https://aminb.gitbooks.io/rust-for-c/content/arrays/index.html
+
+    //Set: fixed size collection known at compile time
+        //sets are value types: they are allocated on the stack like other 
+        //values and a set object is a sequence of values, not a pointer to those values (as in C).
+        int32|4| set = |1, 2, 3, 4|.
+        //So from our examples above, int32|4| set = |1, 2, 3, 4|. will allocate 16 bytes 
+        //on the stack and executing int32|4| b = copy a; will copy 16 bytes. If you want a C-like array, you 
+        //have to explicitly make a pointer to the set, this will give you a pointer to the first element.
+
+        //length should also be inferable by compiler
+        int32|| set = |1, 2, 3, 4|.
+        //in this example size is not written by programmer, but is known by compiler at compile time.
+
+        //size of fixed collections must be specified when passed to functions
+        function DoSomethingWithSet(int32|4| someSet){}
+            /*
+                    [set]
+                    +---+---+---+---+
+            stack   | 1 | 2 | 3 | 4 |
+                    +---+---+---+---+
+            */
+
+
+    //Array: fixed size collection set at run time, although can be set at compile time too
+        int32[] array = [1, 2, 3, 4]. //uncommon use
+        //or
+        //int32[] array = ref set. //ref/pointer to set from above
+
+        function ReadFile(char[] inputText){            //more likely use
+            for each char currentCharacter in inputText{
+
+            }
+        }
+        //an array is a pointer to heap memory, and length
+            /*
+                    [array]
+                    +---+---+
+            stack   |ptr| 4 |   //pointer, length
+                    +-|-+---+
+                      ↓
+                    +---+---+---+---+
+            heap    | 1 | 2 | 3 | 4 |
+                    +---+---+---+---+
+            */
+
+    
+    //List: dynamic size collection
+        int32<> list = <1, 2, 3, 4>.
+        Collection::Append(list, 5). //can we append with another dynamic collection? <5, 6, 7, 8>
+        //a list is a pointer to heap memory, length, and capacity
+        //when length exceeds capacity, a new block of memory is allocated, large enough to hold the extra data, and
+        //values are copied to this new location. the old memory block is freed
+            /*
+                    [list]
+                    +---+---+---+
+            stack   |ptr| 4 | 8 |   //pointer, length, capacity
+                    +-|-+---+---+
+                      ↓
+                    +---+---+---+---+---+---+---+---+
+            heap    | 1 | 2 | 3 | 4 |   |   |   |   |
+                    +---+---+---+---+---+---+---+---+
+            */
+
+    
+        //collection element access and use
+        array[1] //accesses the first element, which is 1
+        array[1-4] //accesses elements 1 through 4, in order, which is 1 2 3 4
+        array[1, 3] //accesses elements 1 and 3, in order, which is 1 3
